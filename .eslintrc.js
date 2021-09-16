@@ -14,7 +14,6 @@ module.exports = {
     'plugin:vue/base',
     'eslint:recommended',
     '@vue/typescript/recommended',
-    '@vue/prettier',
     '@vue/prettier/@typescript-eslint',
   ],
   parserOptions: {

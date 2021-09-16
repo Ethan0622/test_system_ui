@@ -1,30 +1,32 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <q-layout view="hhh lpR fff" class="bg-color">
+    <q-header class="bg-navBar">
+      <q-toolbar>
+        <q-toolbar-title>现代教育技术期末考试系统</q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+
+    <q-footer class="text-center bg-navBar">
+      <q-separator />
+      <div class="q-py-md">© Ethan 版权所有</div>
+    </q-footer>
+  </q-layout>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script setup lang="ts"></script>
 
-#nav {
-  padding: 30px;
+<style lang="scss">
+.toolbar {
+  max-width: 1280px;
+  .tabs .q-tab__content {
+    min-width: 0;
+  }
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.bg-color {
+  background-color: #f8f9fa;
 }
 </style>

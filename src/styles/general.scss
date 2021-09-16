@@ -1,0 +1,22 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+@import './quasar.variables.scss';
+
+.container {
+  margin: 0 auto;
+  @media screen and (max-width: $breakpoint-xl-max) {
+    width: 1300px;
+  }
+  @media screen and (max-width: $breakpoint-md-max) {
+    width: 960px;
+  }
+  @media screen and (max-width: $breakpoint-sm-max) {
+    width: 90%;
+  }
+  width: 1300px;
+  min-width: 600px;
+}

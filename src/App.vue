@@ -1,10 +1,6 @@
 <template>
   <q-layout view="hhh lpR fff" class="bg-color">
-    <q-header class="bg-navBar">
-      <q-toolbar>
-        <q-toolbar-title>现代教育技术期末考试系统</q-toolbar-title>
-      </q-toolbar>
-    </q-header>
+    <AppHeaderVue />
 
     <q-page-container>
       <router-view />
@@ -17,7 +13,9 @@
   </q-layout>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import AppHeaderVue from './AppHeader.vue'
+</script>
 
 <style lang="scss">
 .toolbar {

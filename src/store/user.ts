@@ -3,14 +3,14 @@ import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
 
 interface postParams {
-  url: string
+  urlParams?: number
   data: Record<string, unknown>
   success: any
   failure: any
 }
 
 interface getParams {
-  url: string
+  urlParams?: number 
   success: any
   failure: any
 }
@@ -23,11 +23,27 @@ export default {
     }),
     getters: {},
     actions: {
-      logIn({ url, data, success, failure }: postParams) {
+      register({ urlParams, data, success, failure }: postParams) {
         httpMethods.post({
-          url,
+          url: 'api/users/user_list/',
           data,
-          permission:'allowAny',
+          permission: 'allowAny',
+          success: (res: any) => {
+            if (res.status == 200) {
+              this.userInfo = res.data
+              success(res.data)
+            }
+          },
+          failure: (error: any) => {
+            failure(error)
+          },
+        })
+      },
+      logIn({urlParams, data, success, failure }: postParams) {
+        httpMethods.post({
+          url: 'api/users/user_login/',
+          data,
+          permission: 'allowAny',
           success: (res: any) => {
             if (res.status == 200) {
               VueCookieNext.setCookie('userInfo', res.data)
@@ -44,10 +60,10 @@ export default {
         VueCookieNext.removeCookie('userInfo')
         this.userInfo = ''
       },
-      getUserInfo({ url, success, failure }: getParams) {
+      getUserInfo({ urlParams, success, failure }: getParams) {
         httpMethods.get({
-          url,
-          permission:'authentication',
+          url:`api/users/user_detail/${urlParams}`,
+          permission: 'authentication',
           success: (res: any) => {
             if (res.status == 200) {
               success(res.data)

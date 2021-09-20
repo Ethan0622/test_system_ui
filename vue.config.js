@@ -6,4 +6,7 @@ module.exports = {
     },
   },
   transpileDependencies: ['quasar'],
+  chainWebpack: (config) => {
+    config.cache(true)
+  },
 }

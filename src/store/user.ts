@@ -3,14 +3,14 @@ import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
 
 interface postParams {
-  urlParams?: number
+  urlParams?: number | null
   data: Record<string, unknown>
   success: any
   failure: any
 }
 
 interface getParams {
-  urlParams?: number 
+  urlParams?: number
   success: any
   failure: any
 }
@@ -23,7 +23,7 @@ export default {
     }),
     getters: {},
     actions: {
-      register({ urlParams, data, success, failure }: postParams) {
+      register({ urlParams = null, data, success, failure }: postParams) {
         httpMethods.post({
           url: 'api/users/user_list/',
           data,
@@ -39,7 +39,7 @@ export default {
           },
         })
       },
-      logIn({urlParams, data, success, failure }: postParams) {
+      logIn({ urlParams, data, success, failure }: postParams) {
         httpMethods.post({
           url: 'api/users/user_login/',
           data,
@@ -62,7 +62,7 @@ export default {
       },
       getUserInfo({ urlParams, success, failure }: getParams) {
         httpMethods.get({
-          url:`api/users/user_detail/${urlParams}`,
+          url: `api/users/user_detail/${urlParams}`,
           permission: 'authentication',
           success: (res: any) => {
             if (res.status == 200) {

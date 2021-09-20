@@ -22,6 +22,12 @@
             transition-show="jump-down"
             transition-hide="jump-up"
           >
+            <q-item clickable v-close-popup @click="openUserInfo">
+              <q-item-section side>
+                <q-icon name="logout" size="sm" />
+              </q-item-section>
+              <q-item-section>个人中心</q-item-section>
+            </q-item>
             <q-list style="min-width: 150px" :class="{ 'bg-grey-9': $q.dark.isActive }">
               <q-item
                 v-if="userInfo.type == 0"
@@ -72,27 +78,35 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import headerLogo from './assets/headerLogo.png'
 import userStores from './store/user'
 import DialogJoin from './components/DialogJoin.vue'
+import UserInfo from './views/UserInfo.vue'
 
 const $q = useQuasar()
 const user = userStores.user()
 const userInfo = userStores.user().userInfo
 
-onMounted(() => {
-  console.log(userInfo)
-})
+function openUserInfo() {
+  $q.dialog({
+    component: UserInfo,
+
+    componentProps: {
+      id: userInfo.id,
+    },
+  })
+    .onOk(() => {
+      console.log('OK')
+    })
+    .onCancel(() => {
+      console.log('Cancel')
+    })
+}
 
 function openLoginDialog() {
   $q.dialog({
     component: DialogJoin,
-
-    componentProps: {
-      text: 'from appheader something',
-    },
   })
     .onOk(() => {
       console.log('OK')

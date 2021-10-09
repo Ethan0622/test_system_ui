@@ -26,17 +26,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import userStores from '../store/user'
 
 const $q = useQuasar()
 
+const emits = defineEmits(['login-success'])
+
 const number = ref<string>('')
 const password = ref<string>('')
 const user = userStores.user()
-
-const emits = defineEmits(['login-success'])
+const username = ref<HTMLElement | null>(null)
 
 function onSubmit() {
   user.logIn({
@@ -59,7 +60,7 @@ function onSubmit() {
   })
 }
 
-// onMounted(() => {
-//   $refs.username.focus()
-// })
+onMounted(() => {
+  username.value?.focus()
+})
 </script>

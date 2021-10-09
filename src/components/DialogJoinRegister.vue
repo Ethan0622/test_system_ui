@@ -5,9 +5,9 @@
       filled
       v-model="number"
       ref="username"
-      label="用户名"
+      label="学号/工号"
       lazy-rules="ondemand"
-      :rules="[(val) => (val && val.length > 0) || '请输入用户名']"
+      :rules="[(val) => (val && val.length > 0) || '请输入学号或工号']"
     />
 
     <q-input
@@ -44,24 +44,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import userStores from '../store/user'
 
+const $q = useQuasar()
+
+const emits = defineEmits(['register-success'])
+
+const user = userStores.user()
 const number = ref<string>('')
 const password = ref<string>('')
 const confirmPassword = ref<string>('')
 const userType = ref<string>('0')
-
-const $q = useQuasar()
+const username = ref<HTMLElement | null>(null)
 const userTypeOptiens = [
   { label: '学生', value: '0' },
   { label: '老师', value: '1' },
 ]
-
-const user = userStores.user()
-
-const emits = defineEmits(['register-success'])
 
 function onSubmit() {
   user.register({
@@ -81,4 +81,8 @@ function onSubmit() {
     },
   })
 }
+
+onMounted(() => {
+  username.value?.focus()
+})
 </script>

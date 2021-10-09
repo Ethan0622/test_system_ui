@@ -42,26 +42,15 @@
 
 <script setup lang="ts">
 import { useDialogPluginComponent } from 'quasar'
-import { ref, defineProps, defineEmits } from 'vue'
+import { ref, defineEmits } from 'vue'
 import DialogJoinLoginVue from './DialogJoinLogin.vue'
 import DialogJoinRegisterVue from './DialogJoinRegister.vue'
 
-const props = defineProps({
-  text: String,
-})
+const emits = defineEmits([...useDialogPluginComponent.emits])
 
 let tab = ref<string>('login')
 
-const emits = defineEmits([...useDialogPluginComponent.emits])
-
-// REQUIRED; must be called inside of setup()
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
-// dialogRef      - Vue ref to be applied to QDialog
-// onDialogHide   - Function to be used as handler for @hide on QDialog
-// onDialogOK     - Function to call to settle dialog with "ok" outcome
-//                    example: onDialogOK() - no payload
-//                    example: onDialogOK({ /*.../* }) - with payload
-// onDialogCancel - Function to call to settle dialog with "cancel" outcome
 
 function onOKClick() {
   onDialogOK()
@@ -70,11 +59,4 @@ function onOKClick() {
 function onCancelClick() {
   onDialogCancel()
 }
-
-// This is REQUIRED;
-// Need to inject these (from useDialogPluginComponent() call)
-// into the vue scope for the vue html template
-
-// other methods that we used in our vue html template;
-// these are part of our example (so not required)
 </script>

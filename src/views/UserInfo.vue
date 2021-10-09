@@ -13,7 +13,7 @@
         <q-separator />
 
         <div class="text-h6 q-my-md">更改密码</div>
-        <q-form ref="myForm">
+        <q-form ref="pwdForm">
           <q-input
             class="q-my-sm"
             filled
@@ -21,6 +21,7 @@
             v-model="oldPwd"
             label="当前密码"
             lazy-rules="ondemand"
+            :rules="[checkOldPwd]"
           />
 
           <q-input
@@ -68,6 +69,9 @@ const props = defineProps({
   id: Number,
 })
 
+const emits = defineEmits([...useDialogPluginComponent.emits])
+const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
+
 const number = ref<string>('')
 const email = ref<string>('')
 const realname = ref<string>('')
@@ -75,37 +79,66 @@ const oldPwd = ref<string>('')
 const pwd = ref<string>('')
 const confirmPwd = ref<string>('')
 const user = userStores.user()
-
-const emits = defineEmits([...useDialogPluginComponent.emits])
-
-const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
+const pwdForm = ref<HTMLElement | null>(null)
+let oldPwdCorrect = ref<boolean>(false)
 
 onMounted(() => {
   user.getUserInfo({
     urlParams: props.id,
-    success: (res: any) => {
+    success: (res: Record<string, string>) => {
       number.value = res.number
       email.value = res.email
       realname.value = res.realname
     },
-    failure: (err: any) => {
+    failure: (err: unknown) => {
       console.log(err)
     },
   })
 })
 
+function checkOldPwd() {
+  if (oldPwd.value) {
+    return new Promise<void | string>((resolve) => {
+      user.logIn({
+        data: { number: number.value, password: oldPwd.value },
+        success: () => {
+          resolve()
+          oldPwdCorrect.value = true
+        },
+        failure: () => {
+          resolve('密码错误')
+          oldPwdCorrect.value = false
+        },
+      })
+    })
+  } else if (pwd.value || confirmPwd.value) {
+    return '请输入原密码'
+  } else {
+    return true
+  }
+}
+
 function onOKClick() {
-  user.updateUserInfo({
-    urlParams: props.id,
-    data: { password: pwd.value,email: email.value, realname: realname.value },
-    success: (res: any) => {
-      console.log(res)
-    },
-    failure: (error: any) => {
-      console.log(error)
-    },
+  pwdForm.value?.validate().then((success: boolean) => {
+    if (success) {
+      onDialogOK(
+        user.updateUserInfo({
+          urlParams: props.id,
+          data: { password: pwd.value, email: email.value, realname: realname.value },
+          success: (res: Record<string, string>) => {
+            console.log(res)
+          },
+          failure: (error: unknown) => {
+            console.log(error)
+          },
+        })
+      )
+    } else {
+      setTimeout(() => {
+        pwdForm.value?.resetValidation()
+      }, 2000)
+    }
   })
-  onDialogOK()
 }
 
 function onCancelClick() {

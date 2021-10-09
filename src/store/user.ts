@@ -34,7 +34,7 @@ export default {
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: unknown) => {
             failure(error)
           },
         })
@@ -52,7 +52,7 @@ export default {
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: unknown) => {
             failure(error)
           },
         })

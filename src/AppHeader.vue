@@ -1,9 +1,6 @@
 <template>
   <q-header class="bg-navBar">
     <q-toolbar class="container toolbar text-white q-mx-auto">
-      <q-btn stretch flat no-caps size="16px" to="/">
-        <img :src="headerLogo" style="width: auto; height: 50px; max-width: 90%; max-height: 90%" />
-      </q-btn>
       <q-tabs shrink content-class="tabs">
         <q-route-tab label="首页" to="/" exact />
         <q-route-tab label="关于我们" to="/about" exact />
@@ -79,7 +76,6 @@
 
 <script setup lang="ts">
 import { useQuasar } from 'quasar'
-import headerLogo from './assets/headerLogo.png'
 import userStores from './store/user'
 import DialogJoin from './components/DialogJoin.vue'
 import UserInfo from './views/UserInfo.vue'

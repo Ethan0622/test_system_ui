@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container row justify-center">
     <q-btn unelevated rounded color="primary" label="开始测试" @click="startTest()" />
   </div>
 </template>

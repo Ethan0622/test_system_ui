@@ -17,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'TestPage',
     component: () => import('../views/TestPage.vue'),
   },
+  { path: '/items-list', name: 'ItemsList', component: () => import('../views/ItemsList.vue') },
 ]
 
 const router = createRouter({

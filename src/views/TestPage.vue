@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <div class="text-h5">{{ testName }}</div>
+    <div class="row justify-center">
+      <p class="text-h5">{{ testName }}</p>
+    </div>
   </div>
 </template>
 

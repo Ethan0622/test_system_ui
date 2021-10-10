@@ -15,7 +15,7 @@ interface getParams {
 }
 
 export default {
-  user: defineStore({
+  testing: defineStore({
     id: 'testing',
     state: () => ({
       test_id: null,
@@ -32,6 +32,30 @@ export default {
               success(res.data)
               this.test_id = res.data.test_id
             }
+          },
+          failure: (error: any) => {
+            failure(error)
+          },
+        })
+      },
+      getItemById({ urlParams, success, failure }: getParams) {
+        httpMethods.get({
+          url: `api/itembank/item_detail/${urlParams}/`,
+          permission: 'authentication',
+          success: (res: any) => {
+            success(res.data)
+          },
+          failure: (error: any) => {
+            failure(error)
+          },
+        })
+      },
+      getTypeItems({ urlParams, success, failure }: getParams) {
+        httpMethods.get({
+          url: `api/itembank/item_type_list/${urlParams}/`,
+          permission: 'authentication',
+          success: (res: any) => {
+            success(res.data)
           },
           failure: (error: any) => {
             failure(error)

@@ -1,9 +1,9 @@
 <template>
-  <q-header class="bg-navBar">
+  <q-header v-if="!insideTestPage" class="bg-navBar">
     <q-toolbar class="container toolbar text-white q-mx-auto">
       <q-tabs shrink content-class="tabs">
         <q-route-tab label="首页" to="/" exact />
-        <q-route-tab label="关于我们" to="/about" exact />
+        <q-route-tab label="关于" to="/about" exact />
       </q-tabs>
       <q-space />
       <q-btn v-if="!userInfo" flat label="注册/登录" @click="openLoginDialog" />
@@ -21,7 +21,7 @@
           >
             <q-item clickable v-close-popup @click="openUserInfo">
               <q-item-section side>
-                <q-icon name="logout" size="sm" />
+                <q-icon name="account_circle" size="sm" />
               </q-item-section>
               <q-item-section>个人中心</q-item-section>
             </q-item>
@@ -34,18 +34,10 @@
                 :active-class="$q.dark.isActive ? 'text-white' : 'text-dark'"
               >
                 <q-item-section side>
-                  <q-icon name="group" size="sm" />
+                  <q-icon name="history" size="sm" />
                 </q-item-section>
-                <q-item-section>班级</q-item-section>
+                <q-item-section>考试记录</q-item-section>
               </q-item>
-
-              <q-item
-                v-if="userInfo.type == 0"
-                clickable
-                v-close-popup
-                to="/portfolio-recommendation"
-                :active-class="$q.dark.isActive ? 'text-white' : 'text-dark'"
-              ></q-item>
 
               <q-item
                 v-if="userInfo.type == 1"
@@ -75,19 +67,24 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps } from 'vue'
 import { useQuasar } from 'quasar'
 import userStores from './store/user'
-import DialogJoin from './components/DialogJoin.vue'
 import UserInfo from './views/UserInfo.vue'
+import DialogJoin from './components/DialogJoin.vue'
 
 const $q = useQuasar()
+
+const props = defineProps({
+  insideTestPage: Boolean,
+})
+
 const user = userStores.user()
 const userInfo = userStores.user().userInfo
 
 function openUserInfo() {
   $q.dialog({
     component: UserInfo,
-
     componentProps: {
       id: userInfo.id,
     },

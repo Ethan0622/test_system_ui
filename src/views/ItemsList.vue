@@ -10,7 +10,7 @@
             {{ itemType(props.row.type) }}
           </q-td>
           <q-td key="details" :props="props">
-            {{ props.row.correct }}
+            <q-btn color="primary" size="sm" label="查看" :to="`/items-detail/` + props.row.id"></q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -31,10 +31,9 @@ const columns = [
     required: true,
     label: '题目摘要',
     align: 'left',
-    sortable: true,
   },
-  { name: 'type', align: 'center', label: '题目类型', field: 'calories', sortable: true },
-  { name: 'details', label: '查看详情', field: 'details', sortable: true },
+  { name: 'type', align: 'center', label: '题目类型', field: 'calories' },
+  { name: 'details', align:'center', label: '查看详情', field: 'details' },
 ]
 
 function itemType(num: number) {

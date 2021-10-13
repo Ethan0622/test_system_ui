@@ -1,21 +1,22 @@
 <template>
-  <q-card dark bordered class="bg-grey-9 my-card">
+  <q-card dark bordered class="bg-grey-9 my-card" v-if="itemDetail">
     <q-card-section>
-      <div class="text-h6">{{ item }}</div>
-      <div class="text-subtitle2">by John Doe</div>
+      <div class="text-h6">{{ itemDetail.content }}</div>
     </q-card-section>
 
     <q-separator dark inset />
 
-    <q-card-section></q-card-section>
+    <q-card-section>
+      <p>{{ itemDetail.option_A }}</p>
+      <p>{{ itemDetail.option_B }}</p>
+      <p>{{ itemDetail.option_C }}</p>
+      <p>{{ itemDetail.option_D }}</p>
+    </q-card-section>
   </q-card>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import testingStores from '../store/testing'
-
-const testing = testingStores.testing()
+import { defineProps } from 'vue'
 
 interface ItemObject {
   content: string
@@ -27,19 +28,8 @@ interface ItemObject {
   option_D: string | null
 }
 
-const item = ref<ItemObject>()
-
-onMounted(() => {
-  testing.getItemById({
-    urlParams: 120,
-    success: (res: any) => {
-      console.log(res)
-      item.value = res
-    },
-    failure: (err: any) => {
-      console.log(err)
-    },
-  })
+const props = defineProps({
+  itemDetail: Object as () => ItemObject,
 })
 </script>
 

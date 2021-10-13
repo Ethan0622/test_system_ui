@@ -40,7 +40,7 @@ export default {
       },
       getItemById({ urlParams, success, failure }: getParams) {
         httpMethods.get({
-          url: `api/itembank/item_detail/${urlParams}/`,
+          url: `api/itembank/item_info/${urlParams}/`,
           permission: 'authentication',
           success: (res: any) => {
             success(res.data)

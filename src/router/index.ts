@@ -18,6 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/TestPage.vue'),
   },
   { path: '/items-list', name: 'ItemsList', component: () => import('../views/ItemsList.vue') },
+  { path: '/items-detail/:id', name: 'ItemsDetail', component: () => import('../views/ItemsDetail.vue') },
 ]
 
 const router = createRouter({

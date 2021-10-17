@@ -17,8 +17,27 @@ const routes: Array<RouteRecordRaw> = [
     name: 'TestPage',
     component: () => import('../views/TestPage.vue'),
   },
-  { path: '/items-list', name: 'ItemsList', component: () => import('../views/ItemsList.vue') },
-  { path: '/items-detail/:id', name: 'ItemsDetail', component: () => import('../views/ItemsDetail.vue') },
+  {
+    path: '/dashboard',
+    component: () => import('../views/TeacherDashboard.vue'),
+    children: [
+      { path: '', component: () => import('../views/TeacherDashboardContent.vue') },
+      {
+        path: 'items-list/:id',
+        component: () => import('../views/TeacherDashboardItems.vue'),
+      },
+      {
+        path: 'items-detail/:id',
+        component: () => import('../views/TeacherDashboardItemsDetail.vue'),
+      },
+      {
+        path: 'add-items',
+        component: () => import('../views/TeacherDashboardAddItems.vue'),
+      },
+    ],
+  },
+
+  { path: '/:pathMatch(.*)*', component: () => import('../views/NotFound.vue') },
 ]
 
 const router = createRouter({

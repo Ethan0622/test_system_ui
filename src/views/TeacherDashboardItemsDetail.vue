@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <q-page padding>
     <ItemCardChoiceVue :itemDetail="item" />
     <div v-if="item">
       <div class="text-h6">参数</div>
@@ -7,7 +7,7 @@
       <p>难度b：{{ item.difficulty }}</p>
       <p>猜测系数c：{{ item.guessing }}</p>
     </div>
-  </div>
+    </q-page>
 </template>
 
 <script setup lang="ts">

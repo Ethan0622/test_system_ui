@@ -9,9 +9,7 @@
       <q-btn v-if="!userInfo" flat label="注册/登录" @click="openLoginDialog" />
       <div v-else>
         <q-btn dense unelevated class="q-mr-xs" no-caps padding="6px 15px">
-          <q-avatar size="sm" :icon="userInfo.avatar ? null : 'person'">
-            <q-img v-if="userInfo.avatar" :src="userInfo.avatar" :ratio="1" />
-          </q-avatar>
+          <q-avatar size="sm" :icon="userInfo.avatar ? null : 'person'"></q-avatar>
           <span>{{ userInfo.number }}</span>
           <q-menu
             anchor="bottom middle"
@@ -68,6 +66,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
+import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import userStores from './store/user'
 import UserInfo from './views/UserInfo.vue'
@@ -79,6 +78,7 @@ const props = defineProps({
   insideTestPage: Boolean,
 })
 
+const router = useRouter()
 const user = userStores.user()
 const userInfo = userStores.user().userInfo
 
@@ -111,6 +111,8 @@ function openLoginDialog() {
 
 function logout() {
   user.logOut()
-  window.location.reload()
+  router.replace('/').then(() => {
+    window.location.reload()
+  })
 }
 </script>

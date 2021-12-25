@@ -1,19 +1,7 @@
 import { VueCookieNext } from 'vue-cookie-next'
 import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
-
-interface postParams {
-  urlParams?: number | null
-  data: Record<string, unknown>
-  success: any
-  failure: any
-}
-
-interface getParams {
-  urlParams?: number
-  success: any
-  failure: any
-}
+import { getParams, postParams } from '@/utils/interface'
 
 export default {
   user: defineStore({

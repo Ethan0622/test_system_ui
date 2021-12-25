@@ -17,16 +17,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
-
-interface ItemObject {
-  content: string
-  id: number
-  type: number
-  option_A: string | null
-  option_B: string | null
-  option_C: string | null
-  option_D: string | null
-}
+import { ItemObject } from '../utils/interface'
 
 const props = defineProps({
   itemDetail: Object as () => ItemObject,

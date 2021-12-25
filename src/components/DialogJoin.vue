@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { useDialogPluginComponent } from 'quasar'
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, onMounted } from 'vue'
 import DialogJoinLoginVue from './DialogJoinLogin.vue'
 import DialogJoinRegisterVue from './DialogJoinRegister.vue'
 
@@ -59,4 +59,5 @@ function onOKClick() {
 function onCancelClick() {
   onDialogCancel()
 }
+
 </script>

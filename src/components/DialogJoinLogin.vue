@@ -3,6 +3,7 @@
     <q-input
       class="q-my-sm"
       filled
+      autofocus
       v-model="number"
       ref="username"
       label="学号/工号"
@@ -60,7 +61,4 @@ function onSubmit() {
   })
 }
 
-onMounted(() => {
-  username.value?.focus()
-})
 </script>

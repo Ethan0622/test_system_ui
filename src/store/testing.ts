@@ -1,24 +1,13 @@
 import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
-
-interface postParams {
-  urlParams?: number | null
-  data: Record<string, unknown>
-  success: any
-  failure: any
-}
-
-interface getParams {
-  urlParams?: number
-  success: any
-  failure: any
-}
+import { ItemObject, getParams, postParams } from '../utils/interface'
 
 export default {
   testing: defineStore({
     id: 'testing',
     state: () => ({
       test_id: null,
+      test_item: Object as () => ItemObject,
     }),
     getters: {},
     actions: {
@@ -31,6 +20,7 @@ export default {
             if (res.status == 201) {
               success(res.data)
               this.test_id = res.data.test_id
+              this.test_item = res.data.first_item
             }
           },
           failure: (error: any) => {

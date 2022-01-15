@@ -17,6 +17,7 @@ export interface postParams {
 
 export interface getParams {
   urlParams?: number
+  params?:Record<string, unknown>
   success: any
   failure: any
 }

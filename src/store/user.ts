@@ -1,6 +1,7 @@
 import { VueCookieNext } from 'vue-cookie-next'
 import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
+import { local } from './local'
 import { getParams, postParams } from '@/utils/interface'
 
 export default {
@@ -8,6 +9,9 @@ export default {
     id: 'user',
     state: () => ({
       userInfo: VueCookieNext.getCookie('userInfo'),
+      unfinishTestInfo: local.get('unfinishTestInfo')
+        ? JSON.parse(local.get('unfinishTestInfo') || '')
+        : null,
     }),
     getters: {},
     actions: {
@@ -35,8 +39,10 @@ export default {
           permission: 'allowAny',
           success: (res: any) => {
             if (res.status == 200) {
-              VueCookieNext.setCookie('userInfo', res.data)
-              this.userInfo = res.data
+              VueCookieNext.setCookie('userInfo', res.data.userInfo)
+              local.set('unfinishTestInfo', JSON.stringify(res.data.unfinishTestInfo))
+              this.userInfo = res.data.userInfo
+              this.unfinishTestInfo = res.data.unfinishTestInfo
               success(res.data)
             }
           },
@@ -48,7 +54,11 @@ export default {
 
       logOut() {
         VueCookieNext.removeCookie('userInfo')
+        local.remove('unfinishTestInfo')
+        local.remove('test_id')
+        local.remove('test_item')
         this.userInfo = ''
+        this.unfinishTestInfo = null
       },
 
       getUserInfo({ urlParams, success, failure }: getParams) {
@@ -70,6 +80,38 @@ export default {
         httpMethods.put({
           url: `api/users/user_detail/${urlParams}/`,
           data,
+          permission: 'authentication',
+          success: (res: any) => {
+            if (res.status == 200) {
+              success(res.data)
+            }
+          },
+          failure: (error: any) => {
+            failure(error)
+          },
+        })
+      },
+
+      checkTests({ success, failure }: getParams) {
+        httpMethods.get({
+          url: 'api/users/user_check_tests/',
+          permission: 'authentication',
+          success: (res: any) => {
+            if (res.status == 200) {
+              local.set('unfinishTestInfo', JSON.stringify(res.data))
+              this.unfinishTestInfo = res.data
+              success(res.data)
+            }
+          },
+          failure: (error: any) => {
+            failure(error)
+          },
+        })
+      },
+
+      getTestsList({ success, failure }: getParams) {
+        httpMethods.get({
+          url: 'api/users/user_tests_list/',
           permission: 'authentication',
           success: (res: any) => {
             if (res.status == 200) {

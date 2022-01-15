@@ -28,7 +28,7 @@
                 v-if="userInfo.type == 0"
                 clickable
                 v-close-popup
-                :to="'/classrooms-list'"
+                :to="'/tests-list'"
                 :active-class="$q.dark.isActive ? 'text-white' : 'text-dark'"
               >
                 <q-item-section side>

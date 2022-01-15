@@ -3,17 +3,19 @@ import { baseUrl } from './baseUrl'
 import userStores from '../store/user'
 
 export const httpMethods = {
-  get({ url, permission, success, failure }: any) {
+  get({ url, params, permission, success, failure }: any) {
     let axiosRequest
     if (permission == 'allowAny') {
       axiosRequest = axios({
         method: 'GET',
         url: baseUrl + url,
+        params,
       })
     } else {
       axiosRequest = axios({
         method: 'GET',
         url: baseUrl + url,
+        params,
         headers: { Authorization: 'Bearer ' + userStores.user().userInfo.token },
       })
     }

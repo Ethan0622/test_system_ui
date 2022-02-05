@@ -18,6 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/TestPage.vue'),
   },
   { path: '/tests-list', component: () => import('../views/TestsList.vue') },
+  { path: '/classroom', component: () => import('../views/ClassroomList.vue') },
   {
     path: '/dashboard',
     component: () => import('../views/TeacherDashboard.vue'),
@@ -35,6 +36,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'add-items',
         component: () => import('../views/TeacherDashboardAddItems.vue'),
       },
+      { path: 'class-detail/:id', component: () => import('../views/TeacherDashboardClasses.vue') },
     ],
   },
 

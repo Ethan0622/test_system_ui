@@ -1,36 +1,20 @@
 <template>
   <q-page padding>
-    <ItemCardChoiceVue :itemDetail="item" />
-    <div v-if="item">
-      <div class="text-h6">参数</div>
-      <p>区分度a：{{ item.discrimination }}</p>
-      <p>难度b：{{ item.difficulty }}</p>
-      <p>猜测系数c：{{ item.guessing }}</p>
-    </div>
-    </q-page>
+    <AddChoiceItemsVue v-if="item && item.type == 1" :itemDetail="item" />
+    <AddJudgeItemsVue v-if="item && item.type == 2" :itemDetail="item" />
+  </q-page>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import ItemCardChoiceVue from '@/components/ItemCardChoice.vue'
+import { ItemObject } from '../utils/interface'
+import AddChoiceItemsVue from './ChoiceItemsView.vue'
+import AddJudgeItemsVue from './JudgeItemsView.vue'
 import testingStores from '../store/testing'
 
 const route = useRoute()
 const testing = testingStores.testing()
-
-interface ItemObject {
-  content: string
-  id: number
-  type: number
-  option_A: string | null
-  option_B: string | null
-  option_C: string | null
-  option_D: string | null
-  discrimination: number | null
-  difficulty: number | null
-  guessing: number | null
-}
 
 const item = ref<ItemObject>()
 

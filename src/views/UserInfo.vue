@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDialogPluginComponent } from 'quasar'
+import { QForm, useDialogPluginComponent } from 'quasar'
 import { ref, defineProps, defineEmits, onMounted } from 'vue'
 import userStores from '../store/user'
 
@@ -79,7 +79,7 @@ const oldPwd = ref<string>('')
 const pwd = ref<string>('')
 const confirmPwd = ref<string>('')
 const user = userStores.user()
-const pwdForm = ref<HTMLElement | null>(null)
+const pwdForm = ref<QForm>()
 let oldPwdCorrect = ref<boolean>(false)
 
 onMounted(() => {

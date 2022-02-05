@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
 import { local } from './local'
 import { getParams, postParams } from '@/utils/interface'
+import { AxiosError, AxiosResponse } from 'axios'
 
 export default {
   user: defineStore({
@@ -15,29 +16,29 @@ export default {
     }),
     getters: {},
     actions: {
-      register({ urlParams = null, data, success, failure }: postParams) {
+      register({ data, success, failure }: postParams) {
         httpMethods.post({
           url: 'api/users/user_list/',
           data,
           permission: 'allowAny',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 200) {
               this.userInfo = res.data
               success(res.data)
             }
           },
-          failure: (error: unknown) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
       },
 
-      logIn({ urlParams, data, success, failure }: postParams) {
+      logIn({ data, success, failure }: postParams) {
         httpMethods.post({
           url: 'api/users/user_login/',
           data,
           permission: 'allowAny',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 200) {
               VueCookieNext.setCookie('userInfo', res.data.userInfo)
               local.set('unfinishTestInfo', JSON.stringify(res.data.unfinishTestInfo))
@@ -46,7 +47,7 @@ export default {
               success(res.data)
             }
           },
-          failure: (error: unknown) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
@@ -65,12 +66,12 @@ export default {
         httpMethods.get({
           url: `api/users/user_detail/${urlParams}/`,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 200) {
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
@@ -81,12 +82,12 @@ export default {
           url: `api/users/user_detail/${urlParams}/`,
           data,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 200) {
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
@@ -96,14 +97,14 @@ export default {
         httpMethods.get({
           url: 'api/users/user_check_tests/',
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 200) {
               local.set('unfinishTestInfo', JSON.stringify(res.data))
               this.unfinishTestInfo = res.data
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
@@ -113,12 +114,12 @@ export default {
         httpMethods.get({
           url: 'api/users/user_tests_list/',
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 200) {
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })

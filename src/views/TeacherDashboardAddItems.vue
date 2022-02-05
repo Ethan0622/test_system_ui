@@ -37,54 +37,16 @@
 
           <q-tab-panels v-model="itemType" animated>
             <q-tab-panel name="选择题">
-              <q-card>
-                <q-card-section class="row justify-evenly">
-                  <div class="row col-8 items-center">
-                    <span class="text-h6 col-2">题干：</span>
-                    <q-input class="col-10" filled v-model="content" autogrow label="请输入题干" />
-                  </div>
-                  <div class="row col-8 items-center">
-                    <span class="text-h6 col-2">正确答案：</span>
-                    <q-input
-                      class="col-10"
-                      filled
-                      v-model="correct"
-                      autogrow
-                      label="请输入正确答案，填写字母"
-                    />
-                  </div>
-                  <div class="row justify-between col-8 items-center">
-                    <span class="text-h6 col-2">选项A：</span>
-                    <q-input class="col-auto" filled v-model="option_A" label="请填写选项A" />
-                    <span class="text-h6 col-2">选项B：</span>
-                    <q-input class="col-auto" filled v-model="option_B" label="请填写选项B" />
-                    <span class="text-h6 col-2">选项C：</span>
-                    <q-input class="col-auto" filled v-model="option_C" label="请填写选项C" />
-                    <span class="text-h6 col-2">选项D：</span>
-                    <q-input class="col-auto" filled v-model="option_D" label="请填写选项D" />
-                  </div>
-                </q-card-section>
-              </q-card>
+              <add-choice-items-vue />
+            </q-tab-panel>
+            <q-tab-panel name="判断题">
+              <add-judge-items-vue />
             </q-tab-panel>
           </q-tab-panels>
         </q-tab-panel>
 
         <q-tab-panel name="批量添加">
-          <div class="row justify-center">
-            <q-file
-              class="col-5"
-              color="teal"
-              filled
-              v-model="file"
-              accept=".xlsx, .xls"
-              label="试题文件，目前仅支持Excel文件"
-            >
-              <template v-slot:prepend>
-                <q-icon name="cloud_upload" />
-              </template>
-            </q-file>
-            <q-btn unelevated color="primary" icon="upload" title="上传" />
-          </div>
+          <add-file-items-vue />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -93,14 +55,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useQuasar } from 'quasar'
+import itembankStores from '../store/itembank'
+import AddChoiceItemsVue from './ChoiceItemsView.vue'
+import AddJudgeItemsVue from './JudgeItemsView.vue'
+import AddFileItemsVue from './UploadItemsFileView.vue'
+
+const $q = useQuasar()
+
+const itembank = itembankStores.itembank()
 
 const tab = ref<string>('逐题添加')
-const file = ref(null)
 const itemType = ref<string>('选择题')
-const content = ref<string>('')
-const correct = ref<string>('')
-const option_A = ref<string>('')
-const option_B= ref<string>('')
-const option_C= ref<string>('')
-const option_D= ref<string>('')
+
 </script>

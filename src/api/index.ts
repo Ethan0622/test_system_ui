@@ -78,18 +78,20 @@ export const httpMethods = {
       })
   },
 
-  delete({ url, permission, success, failure }: any) {
+  delete({ url, data, permission, success, failure }: any) {
     let axiosRequest
     if (permission == 'allowAny') {
       axiosRequest = axios({
         method: 'DELETE',
         url: baseUrl + url,
+        data,
       })
     } else {
       axiosRequest = axios({
         method: 'DELETE',
         url: baseUrl + url,
         headers: { Authorization: 'Bearer ' + userStores.user().userInfo.token },
+        data,
       })
     }
     axiosRequest

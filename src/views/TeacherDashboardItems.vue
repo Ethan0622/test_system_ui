@@ -21,22 +21,50 @@
               :to="`/dashboard/items-detail/` + props.row.id"
             ></q-btn>
           </q-td>
+          <q-td key="delete" :props="props">
+            <q-btn
+              color="red"
+              size="sm"
+              label="删除"
+              @click=";(deleteConfirm.flag = true), (deleteConfirm.item_id = props.row.id)"
+            ></q-btn>
+          </q-td>
         </q-tr>
       </template>
     </q-table>
   </q-page>
+  <q-dialog v-model="deleteConfirm.flag" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <q-avatar icon="delete" color="primary" text-color="white" />
+        <span class="q-ml-sm">确定删除本题？</span>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="取消" color="primary" v-close-popup />
+        <q-btn flat label="确定" color="red" @click="deleteItem" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
+import { ref, onMounted, reactive } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import testingStores from '../store/testing'
+import itembankStores from '../store/itembank'
+import { ItemObject } from '../utils/interface'
+
+const $q = useQuasar()
 
 const route = useRoute()
 const testing = testingStores.testing()
+const itembank = itembankStores.itembank()
 
-let rows = ref<[]>([])
+let rows = ref([])
 const keyWord = ref<string>('')
+const deleteConfirm = reactive({ flag: false, item_id: undefined })
 const columns = [
   {
     name: 'content',
@@ -45,7 +73,8 @@ const columns = [
     align: 'left',
   },
   { name: 'type', align: 'center', label: '题目类型', field: 'calories' },
-  { name: 'details', align: 'center', label: '查看详情', field: 'details' },
+  { name: 'details', align: 'right', label: '查看详情', field: 'details' },
+  { name: 'delete', align: 'center', label: '删除', field: 'delete' },
 ]
 
 function itemType(num: number) {
@@ -59,9 +88,33 @@ function itemType(num: number) {
   }
 }
 
-function filterItemsByKeyWord(keyWord) {
+function deleteItem() {
+  itembank.deleteItem({
+    urlParams: deleteConfirm.item_id,
+    success: (res: any) => {
+      $q.notify({
+        type: 'positive',
+        message: '删除成功',
+        position: 'top',
+      })
+      let itemIndex = rows.value.findIndex((item: ItemObject) => item.id === deleteConfirm.item_id)
+      if (itemIndex != -1) {
+        rows.value.splice(itemIndex, 1)
+      }
+    },
+    failure: (error: any) => {
+      $q.notify({
+        type: 'negative',
+        message: '删除失败',
+        position: 'top',
+      })
+    },
+  })
+}
+
+function filterItemsByKeyWord(keyWord: string) {
   if (keyWord) {
-    let newRows = rows.value.filter((item) => {
+    let newRows = rows.value.filter((item: ItemObject) => {
       if (item.content.includes(keyWord)) {
         return item
       }
@@ -71,6 +124,7 @@ function filterItemsByKeyWord(keyWord) {
 }
 
 onBeforeRouteUpdate(async (to, from) => {
+  keyWord.value = ''
   const pathmatch = to.fullPath.includes('/dashboard/items-list/')
   if (pathmatch) {
     testing.getTypeItems({

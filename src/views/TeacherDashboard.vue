@@ -45,15 +45,126 @@
               </q-item>
             </q-list>
           </q-expansion-item>
-          <q-expansion-item default-opened icon="group" label="班级管理"></q-expansion-item>
+          <q-expansion-item default-opened icon="group" label="班级管理">
+            <q-list v-if="classList && classList.length">
+              <q-item
+                v-for="item in classList"
+                :key="item.id"
+                clickable
+                :active-class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+                :to="'/dashboard/class-detail/' + item.id"
+                replace
+              >
+                <q-item-section>{{ item.class_name }}</q-item-section>
+                <q-item-section side>
+                  <div class="row">
+                    <div
+                      @click="deleteClassConfirm(item)"
+                      class="text-red q-mr-md cursor-pointer text-weight-regular"
+                    >
+                      删除
+                    </div>
+                    <div
+                      @click="openEditDialog({ isCreate: false, classInfo: item })"
+                      class="text-primary cursor-pointer text-weight-regular"
+                    >
+                      编辑
+                    </div>
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
+            <div v-else class="text-center text-body2 text-grey-6 q-pb-md q-pt-xs">还没有班级</div>
+            <div class="text-center">
+              <a @click="openEditDialog({ isCreate: true })" class="text-primary cursor-pointer">
+                创建新的班级...
+              </a>
+            </div>
+          </q-expansion-item>
         </q-list>
       </div>
     </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { date, useQuasar } from 'quasar'
+import { onMounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import EditClassDialog from './TeacherDashboardEditClassDialog.vue'
+import classesStores from '../store/classes'
+import { ClassObject } from '../utils/interface'
+
+const $q = useQuasar()
+const route = useRoute()
+const router = useRouter()
+
+const myClass = classesStores.classes()
+
+const classList = ref<ClassObject[]>([])
+
+function getClasses() {
+  myClass.getClasses({
+    success: (res: any) => {
+      classList.value = res
+      console.log(res)
+    },
+    failure: (error: any) => {
+      console.log(error)
+    },
+  })
+}
+
+function openEditDialog({ isCreate, classInfo = undefined }: { isCreate: boolean; classInfo?: ClassObject }) {
+  $q.dialog({
+    component: EditClassDialog,
+    componentProps: {
+      isCreate,
+      classInfo,
+    },
+  })
+    .onOk((classId: number) => {
+      router.replace('/dashboard/classroom/' + classId)
+      // window.location.reload()
+      getClasses()
+      console.log('ok')
+    })
+    .onCancel(() => {
+      console.log('cancel')
+    })
+}
+
+function deleteClassConfirm(classroom: ClassObject) {
+  $q.dialog({
+    title: '删除“' + classroom.class_name + '”',
+    message: `您将要删除 <strong>${classroom.class_name}</strong>，删除后将不可恢复，确定这么做吗？`,
+    cancel: true,
+    html: true,
+    ok: { color: 'red', flat: true },
+  }).onOk(() => {
+    myClass.deleteClass({
+      urlParams: classroom.id,
+      success: () => {
+        getClasses()
+        if (Number(route.params.id) == classroom.id) {
+          router.replace('/dashboard')
+        }
+      },
+      failure: (res: any) => {
+        $q.notify({
+          type: 'negative',
+          message: '删除班级失败',
+          position: 'top',
+        })
+      },
+    })
+  })
+}
+
+onMounted(() => {
+  getClasses()
+})
+</script>

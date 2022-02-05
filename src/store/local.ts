@@ -1,5 +1,5 @@
 export const local = {
-  set(key: string, value: string) {
+  set(key: string, value: string):void {
     window.localStorage.setItem(key, value)
   },
 
@@ -11,7 +11,7 @@ export const local = {
     }
   },
 
-  remove(key: string) {
+  remove(key: string):void {
     localStorage.removeItem(key)
   },
 }

@@ -1,10 +1,10 @@
 <template>
-  <q-card dark bordered class="bg-grey-9 my-card" v-if="itemDetail">
+  <q-card bordered class="bg-grey-3 my-card" v-if="itemDetail">
     <q-card-section>
       <div class="text-h6">{{ itemDetail.content }}</div>
     </q-card-section>
 
-    <q-separator dark inset />
+    <q-separator inset />
 
     <q-card-section class="row justify-center">
       <q-radio
@@ -35,13 +35,6 @@
         class="col-12"
         @click="deliver_answer()"
       />
-    </q-card-section>
-
-    <q-card-section>
-      <p>{{ itemDetail.option_A }}</p>
-      <p>{{ itemDetail.option_B }}</p>
-      <p>{{ itemDetail.option_C }}</p>
-      <p>{{ itemDetail.option_D }}</p>
     </q-card-section>
   </q-card>
 </template>

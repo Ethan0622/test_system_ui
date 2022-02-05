@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
 import { local } from './local'
-import { ItemObject, getParams, postParams } from '../utils/interface'
+import { getParams, postParams } from '../utils/interface'
+import { AxiosError, AxiosResponse } from 'axios'
 
 export default {
   testing: defineStore({
@@ -12,12 +13,12 @@ export default {
     }),
     getters: {},
     actions: {
-      startTest({ urlParams = null, data, success, failure }: postParams) {
+      startTest({ data, success, failure }: postParams) {
         httpMethods.post({
           url: 'api/testing/test_info/',
           data,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 201) {
               local.set('test_id', JSON.stringify(res.data.testInfo.test_id))
               local.set('test_item', JSON.stringify(res.data.first_item))
@@ -26,17 +27,17 @@ export default {
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
       },
-      continueTest({ urlParams = null, data, success, failure }: postParams) {
+      continueTest({ data, success, failure }: postParams) {
         httpMethods.post({
           url: 'api/testing/test_continue/',
           data,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 200) {
               if (res.data.next_item) {
                 local.set('test_item', JSON.stringify(res.data.next_item))
@@ -47,7 +48,7 @@ export default {
               }
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
@@ -57,24 +58,24 @@ export default {
           url: 'api/testing/init_test_process/',
           params,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 200) {
               local.set('test_item', JSON.stringify(res.data.next_item))
               this.test_item = res.data.next_item
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
       },
-      submitInitAnswer({ urlParams = null, data, success, failure }: postParams) {
+      submitInitAnswer({ data, success, failure }: postParams) {
         httpMethods.post({
           url: 'api/testing/init_test_process/',
           data,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 201) {
               if (res.data.next_item) {
                 local.set('test_item', JSON.stringify(res.data.next_item))
@@ -85,24 +86,24 @@ export default {
               }
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
       },
-      submitAnswer({ urlParams = null, data, success, failure }: postParams) {
+      submitAnswer({ data, success, failure }: postParams) {
         httpMethods.post({
           url: 'api/testing/object_test_process/',
           data,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             if (res.status == 201) {
               local.set('test_item', JSON.stringify(res.data.next_item))
               this.test_item = res.data.next_item
               success(res.data)
             }
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
@@ -111,10 +112,10 @@ export default {
         httpMethods.get({
           url: `api/itembank/item_info/${urlParams}/`,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             success(res.data)
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })
@@ -123,10 +124,10 @@ export default {
         httpMethods.get({
           url: `api/itembank/item_type_list/${urlParams}/`,
           permission: 'authentication',
-          success: (res: any) => {
+          success: (res: AxiosResponse) => {
             success(res.data)
           },
-          failure: (error: any) => {
+          failure: (error: AxiosError) => {
             failure(error)
           },
         })

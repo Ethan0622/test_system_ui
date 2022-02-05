@@ -1,11 +1,34 @@
 export interface ItemObject {
-  content: string
   id: number
   type: number
-  option_A: string | null
-  option_B: string | null
-  option_C: string | null
-  option_D: string | null
+  content: string
+  correct: string
+  knowledge_id: number
+  option_A: string
+  option_B: string
+  option_C: string
+  option_D: string
+  discrimination: number | undefined
+  difficulty: number | undefined
+  guessing: number | undefined
+}
+
+export interface ClassObject {
+  id: number
+  class_name: string
+  create_time: string
+  invitation_code: string
+  teacher_id: number
+}
+
+export interface UserObject {
+  id: number
+  type: number
+  number: string
+  email: string
+  realname: string
+  token: string
+  joined_class: number | undefined
 }
 
 export interface postParams {
@@ -17,7 +40,19 @@ export interface postParams {
 
 export interface getParams {
   urlParams?: number
-  params?:Record<string, unknown>
+  params?: Record<string, unknown>
+  success: any
+  failure: any
+}
+
+export interface uploadParams {
+  data: FormData
+  success: any
+  failure: any
+}
+
+export interface deleteParams {
+  urlParams?: number
   success: any
   failure: any
 }

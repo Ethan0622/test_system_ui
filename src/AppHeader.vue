@@ -38,6 +38,19 @@
               </q-item>
 
               <q-item
+                v-if="userInfo.type == 0"
+                clickable
+                v-close-popup
+                :to="'/classroom'"
+                :active-class="$q.dark.isActive ? 'text-white' : 'text-dark'"
+              >
+                <q-item-section side>
+                  <q-icon name="group" size="sm" />
+                </q-item-section>
+                <q-item-section>班级</q-item-section>
+              </q-item>
+
+              <q-item
                 v-if="userInfo.type == 1"
                 clickable
                 v-close-popup

@@ -31,8 +31,8 @@
 import { useQuasar } from 'quasar'
 import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import classesStores from '../store/classes'
-import userStores from '../store/user'
+import { useClassStore } from '../store/classes'
+import { useUserStore } from '../store/user'
 import { ClassObject } from '../utils/interface'
 import TeacherDashboardClassStudentsVue from './TeacherDashboardClassStudents.vue'
 
@@ -40,8 +40,8 @@ const $q = useQuasar()
 
 const route = useRoute()
 
-const myClass = classesStores.classes()
-const user = userStores.user()
+const myClass = useClassStore()
+const user = useUserStore()
 
 const tab = ref<string>('student')
 // const classroom = ref<ClassObject>()

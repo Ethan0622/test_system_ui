@@ -31,27 +31,38 @@ export interface UserObject {
   joined_class: number | undefined
 }
 
-export interface postParams {
-  urlParams?: number | null
-  data: Record<string, unknown>
-  success: any
-  failure: any
+export interface UnfinishedTest {
+  isUnfinished: boolean
+  unfinishedInfo:
+    | {
+        finish_object_test: boolean | null
+        start_time: string
+        test_id: number
+      }
+    | undefined
 }
 
-export interface getParams {
+export interface GetParams {
   urlParams?: number
   params?: Record<string, unknown>
   success: any
   failure: any
 }
 
-export interface uploadParams {
+export interface PostParams {
+  urlParams?: number | null
+  data: Record<string, unknown>
+  success: any
+  failure: any
+}
+
+export interface UploadParams {
   data: FormData
   success: any
   failure: any
 }
 
-export interface deleteParams {
+export interface DeleteParams {
   urlParams?: number
   success: any
   failure: any

@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { ref, defineProps, onMounted } from 'vue'
 import { QForm, useQuasar } from 'quasar'
-import itembankStores from '../store/itembank'
+import { useItemStore } from '../store/itembank'
 import { ItemObject } from '../utils/interface'
 
 const $q = useQuasar()
@@ -71,7 +71,7 @@ const props = defineProps({
   itemDetail: Object as () => ItemObject,
 })
 
-const itembank = itembankStores.itembank()
+const itembank = useItemStore()
 
 const itemForm = ref<QForm>()
 const content = ref<string>('')

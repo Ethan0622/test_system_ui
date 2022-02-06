@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { ref, defineEmits, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-import userStores from '../store/user'
+import {useUserStore} from '../store/user'
 
 const $q = useQuasar()
 
@@ -37,7 +37,7 @@ const emits = defineEmits(['login-success'])
 
 const number = ref<string>('')
 const password = ref<string>('')
-const user = userStores.user()
+const user = useUserStore()
 const username = ref<HTMLElement | null>(null)
 
 function onSubmit() {

@@ -3,7 +3,9 @@
     <div class="row justify-center q-my-md">
       <p class="col-12 text-h4 text-center">欢迎来到现代教育技术考试系统</p>
       <p class="col-12 text-h5 text-center">{{ guide }}</p>
-      <p v-if="unfinishTest">未完成的考试已于{{ unfinishTestInfo.unfinished_test.start_time }}开始</p>
+      <p v-if="unfinishedTest.unfinishedInfo && unfinishedTest.isUnfinished">
+        未完成的考试已于{{ unfinishedTest.unfinishedInfo.start_time }}开始
+      </p>
     </div>
     <div class="row justify-center">
       <q-btn unelevated rounded color="primary" :label="btnLabel" @click="startTest()" />
@@ -27,28 +29,26 @@
 
 <script setup lang="ts">
 import { useQuasar } from 'quasar'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-import userStores from '../store/user'
-import testingStores from '../store/testing'
-import { local } from '../store/local'
+import { useUserStore } from '../store/user'
+import { useTestStore } from '../store/testing'
 
 const $q = useQuasar()
 const router = useRouter()
 
-const user = userStores.user()
-const userInfo = userStores.user().userInfo
-const unfinishTestInfo = userStores.user().unfinishTestInfo
-const testing = testingStores.testing()
+const user = useUserStore()
+const testing = useTestStore()
+const userInfo = computed(() => useUserStore().userInfo)
+const unfinishedTest = computed(() => useUserStore().unfinishedTest)
 
 const btnLabel = ref<string>('开始测试')
 const guide = ref<string>('点击下方按钮开始考试')
-const unfinishTest = ref<boolean>(false)
 const initTestDialog = ref<boolean>(false)
 
 onMounted(() => {
-  if (userInfo) {
+  if (userInfo.value) {
     user.checkTests({
       success: (res: any) => {
         console.log(res)
@@ -59,26 +59,24 @@ onMounted(() => {
     })
   }
 
-  if (unfinishTestInfo?.unfinishTest) {
-    unfinishTest.value = true
+  if (unfinishedTest.value.isUnfinished) {
     btnLabel.value = '继续测试'
     guide.value = '您还有未完成的考试，请继续考试。'
-    local.set('test_id', JSON.stringify(unfinishTestInfo.unfinished_test.test_id))
   }
 })
 
 function startTest() {
-  if (!userInfo) {
+  if (!userInfo.value) {
     $q.notify({
       color: 'red',
       icon: 'error',
       message: '请先登录，再开始测试',
       position: 'top',
     })
-  } else if (unfinishTestInfo?.unfinishTest) {
-    let unfinished_test_id = unfinishTestInfo.unfinished_test.test_id
+  } else if (unfinishedTest.value.isUnfinished) {
+    let unfinishedTestId = unfinishedTest.value.unfinishedInfo?.test_id
     testing.continueTest({
-      data: { unfinished_test_id },
+      data: { unfinished_test_id: unfinishedTestId },
       success: (res: any) => {
         if (res.next_item) {
           router.push('/test-page')
@@ -90,7 +88,6 @@ function startTest() {
         console.log(error)
       },
     })
-    // router.push('/test-page')
   } else {
     testing.startTest({
       data: {},
@@ -108,7 +105,7 @@ function startTest() {
 function continueInitTest() {
   testing.continueInitTest({
     params: {
-      test_id: unfinishTestInfo.unfinished_test.test_id,
+      test_id: unfinishedTest.value.unfinishedInfo?.test_id,
     },
     success: (res: any) => {
       console.log(res)

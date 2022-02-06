@@ -27,7 +27,7 @@ import { useQuasar, useDialogPluginComponent } from 'quasar'
 import { ref, defineEmits, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-import classesStores from '../store/classes'
+import { useClassStore } from '../store/classes'
 import { ClassObject } from '../utils/interface'
 
 const $q = useQuasar()
@@ -40,9 +40,9 @@ const props = defineProps({
   isCreate: Boolean,
 })
 
-const myClass = classesStores.classes()
-const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
+const myClass = useClassStore()
 const class_name = ref<string>('')
+const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
 
 function onOKClick() {
   onDialogOK()

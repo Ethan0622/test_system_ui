@@ -60,11 +60,11 @@
 <script setup lang="ts">
 import { QInput, useQuasar } from 'quasar'
 import { ref, onMounted } from 'vue'
-import classesStores from '../store/classes'
+import { useClassStore } from '../store/classes'
 
 const $q = useQuasar()
 
-const myClass = classesStores.classes()
+const myClass = useClassStore()
 
 const columns = [
   { name: 'class_name', label: '班级', align: 'center', field: 'class_name', sortable: true },

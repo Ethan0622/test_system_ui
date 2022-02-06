@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { baseUrl } from './baseUrl'
-import userStores from '../store/user'
+import { useUserStore } from '../store/user'
 
 export const httpMethods = {
-  get({ url, params, permission, success, failure }: any) {
+  get({ url, params, permission, success, failure }: any): void {
     let axiosRequest
     if (permission == 'allowAny') {
       axiosRequest = axios({
@@ -16,7 +16,7 @@ export const httpMethods = {
         method: 'GET',
         url: baseUrl + url,
         params,
-        headers: { Authorization: 'Bearer ' + userStores.user().userInfo.token },
+        headers: { Authorization: 'Bearer ' + useUserStore().userInfo.token },
       })
     }
     axiosRequest
@@ -28,7 +28,7 @@ export const httpMethods = {
       })
   },
 
-  post({ url, data, permission, success, failure }: any) {
+  post({ url, data, permission, success, failure }: any): void {
     let axiosRequest
     if (permission == 'allowAny') {
       axiosRequest = axios({
@@ -40,7 +40,7 @@ export const httpMethods = {
       axiosRequest = axios({
         method: 'POST',
         url: baseUrl + url,
-        headers: { Authorization: 'Bearer ' + userStores.user().userInfo.token },
+        headers: { Authorization: 'Bearer ' + useUserStore().userInfo.token },
         data,
       })
     }
@@ -53,7 +53,7 @@ export const httpMethods = {
       })
   },
 
-  put({ url, data, permission, success, failure }: any) {
+  put({ url, data, permission, success, failure }: any): void {
     let axiosRequest
     if (permission == 'allowAny') {
       axiosRequest = axios({
@@ -65,7 +65,7 @@ export const httpMethods = {
       axiosRequest = axios({
         method: 'PUT',
         url: baseUrl + url,
-        headers: { Authorization: 'Bearer ' + userStores.user().userInfo.token },
+        headers: { Authorization: 'Bearer ' + useUserStore().userInfo.token },
         data,
       })
     }
@@ -78,7 +78,7 @@ export const httpMethods = {
       })
   },
 
-  delete({ url, data, permission, success, failure }: any) {
+  delete({ url, data, permission, success, failure }: any): void {
     let axiosRequest
     if (permission == 'allowAny') {
       axiosRequest = axios({
@@ -90,7 +90,7 @@ export const httpMethods = {
       axiosRequest = axios({
         method: 'DELETE',
         url: baseUrl + url,
-        headers: { Authorization: 'Bearer ' + userStores.user().userInfo.token },
+        headers: { Authorization: 'Bearer ' + useUserStore().userInfo.token },
         data,
       })
     }

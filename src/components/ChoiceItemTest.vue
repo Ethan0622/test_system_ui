@@ -10,28 +10,28 @@
       <q-radio
         v-model="choiceAnswer"
         val="A"
-        :label="itemDetail.option_A"
+        :label="'A、' + itemDetail.option_A"
         class="col-12"
         @click="deliver_answer()"
       />
       <q-radio
         v-model="choiceAnswer"
         val="B"
-        :label="itemDetail.option_B"
+        :label="'B、' + itemDetail.option_B"
         class="col-12"
         @click="deliver_answer()"
       />
       <q-radio
         v-model="choiceAnswer"
         val="C"
-        :label="itemDetail.option_C"
+        :label="'C、' + itemDetail.option_C"
         class="col-12"
         @click="deliver_answer()"
       />
       <q-radio
         v-model="choiceAnswer"
         val="D"
-        :label="itemDetail.option_D"
+        :label="'D、' + itemDetail.option_D"
         class="col-12"
         @click="deliver_answer()"
       />

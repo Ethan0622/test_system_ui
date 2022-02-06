@@ -52,15 +52,15 @@
 import { useQuasar } from 'quasar'
 import { ref, onMounted, reactive } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
-import testingStores from '../store/testing'
-import itembankStores from '../store/itembank'
+import { useTestStore } from '../store/testing'
+import { useItemStore } from '../store/itembank'
 import { ItemObject } from '../utils/interface'
 
 const $q = useQuasar()
 
 const route = useRoute()
-const testing = testingStores.testing()
-const itembank = itembankStores.itembank()
+const testing = useTestStore()
+const itembank = useItemStore()
 
 let rows = ref([])
 const keyWord = ref<string>('')

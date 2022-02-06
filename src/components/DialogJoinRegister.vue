@@ -47,13 +47,14 @@
 <script setup lang="ts">
 import { ref, defineEmits, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-import userStores from '../store/user'
+import { useUserStore } from '../store/user'
 
 const $q = useQuasar()
 
 const emits = defineEmits(['register-success'])
 
-const user = userStores.user()
+const user = useUserStore()
+
 const number = ref<string>('')
 const password = ref<string>('')
 const confirmPassword = ref<string>('')

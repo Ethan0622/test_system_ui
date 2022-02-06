@@ -11,10 +11,10 @@ import { useRoute } from 'vue-router'
 import { ItemObject } from '../utils/interface'
 import AddChoiceItemsVue from './ChoiceItemsView.vue'
 import AddJudgeItemsVue from './JudgeItemsView.vue'
-import testingStores from '../store/testing'
+import {useTestStore} from '../store/testing'
 
 const route = useRoute()
-const testing = testingStores.testing()
+const testing = useTestStore()
 
 const item = ref<ItemObject>()
 

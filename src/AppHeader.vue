@@ -81,7 +81,7 @@
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-import userStores from './store/user'
+import { useUserStore } from './store/user'
 import UserInfo from './views/UserInfo.vue'
 import DialogJoin from './components/DialogJoin.vue'
 
@@ -92,8 +92,8 @@ const props = defineProps({
 })
 
 const router = useRouter()
-const user = userStores.user()
-const userInfo = userStores.user().userInfo
+const user = useUserStore()
+const userInfo = useUserStore().userInfo
 
 function openUserInfo() {
   $q.dialog({

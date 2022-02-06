@@ -63,14 +63,15 @@
 <script setup lang="ts">
 import { QForm, useDialogPluginComponent } from 'quasar'
 import { ref, defineProps, defineEmits, onMounted } from 'vue'
-import userStores from '../store/user'
+import { useUserStore } from '../store/user'
 
 const props = defineProps({
   id: Number,
 })
 
 const emits = defineEmits([...useDialogPluginComponent.emits])
-const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
+
+const user = useUserStore()
 
 const number = ref<string>('')
 const email = ref<string>('')
@@ -78,23 +79,9 @@ const realname = ref<string>('')
 const oldPwd = ref<string>('')
 const pwd = ref<string>('')
 const confirmPwd = ref<string>('')
-const user = userStores.user()
 const pwdForm = ref<QForm>()
 let oldPwdCorrect = ref<boolean>(false)
-
-onMounted(() => {
-  user.getUserInfo({
-    urlParams: props.id,
-    success: (res: Record<string, string>) => {
-      number.value = res.number
-      email.value = res.email
-      realname.value = res.realname
-    },
-    failure: (err: unknown) => {
-      console.log(err)
-    },
-  })
-})
+const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
 
 function checkOldPwd() {
   if (oldPwd.value) {
@@ -144,6 +131,20 @@ function onOKClick() {
 function onCancelClick() {
   onDialogCancel()
 }
+
+onMounted(() => {
+  user.getUserInfo({
+    urlParams: props.id,
+    success: (res: Record<string, string>) => {
+      number.value = res.number
+      email.value = res.email
+      realname.value = res.realname
+    },
+    failure: (err: unknown) => {
+      console.log(err)
+    },
+  })
+})
 </script>
 
 <style lang="scss" scoped>

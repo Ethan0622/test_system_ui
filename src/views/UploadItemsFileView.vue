@@ -41,11 +41,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
-import itembankStores from '../store/itembank'
+import { useItemStore } from '../store/itembank'
 
 const $q = useQuasar()
 
-const itembank = itembankStores.itembank()
+const itembank = useItemStore()
 
 const file = ref(null)
 const uploadErrors = ref<string[]>([])

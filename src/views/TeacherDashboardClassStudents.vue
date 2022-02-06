@@ -65,13 +65,13 @@
 import { QDialog, QInput, useQuasar } from 'quasar'
 import { ref, onMounted, reactive } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
-import classesStores from '../store/classes'
+import {useClassStore} from '../store/classes'
 import { UserObject } from '../utils/interface'
 
 const $q = useQuasar()
 const route = useRoute()
 
-const myClass = classesStores.classes()
+const myClass = useClassStore()
 
 const columns = [
   { name: 'index', label: '序号', align: 'center' },

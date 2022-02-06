@@ -56,16 +56,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
-import itembankStores from '../store/itembank'
+import { useItemStore } from '../store/itembank'
 import AddChoiceItemsVue from './ChoiceItemsView.vue'
 import AddJudgeItemsVue from './JudgeItemsView.vue'
 import AddFileItemsVue from './UploadItemsFileView.vue'
 
 const $q = useQuasar()
 
-const itembank = itembankStores.itembank()
+const itembank = useItemStore()
 
 const tab = ref<string>('逐题添加')
 const itemType = ref<string>('选择题')
-
 </script>

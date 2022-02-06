@@ -1,11 +1,11 @@
-import user from './user'
-import testing from './testing'
-import itembank from './itembank'
-import classes from './classes'
+import { useUserStore } from './user'
+import { useTestStore } from './testing'
+import { useItemStore } from './itembank'
+import { useClassStore } from './classes'
 
 export default {
-  user,
-  testing,
-  itembank,
-  classes,
+  useUserStore,
+  useTestStore,
+  useItemStore,
+  useClassStore,
 }

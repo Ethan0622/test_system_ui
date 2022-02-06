@@ -91,18 +91,18 @@
 </template>
 
 <script setup lang="ts">
-import { date, useQuasar } from 'quasar'
-import { onMounted, reactive, ref } from 'vue'
+import { useQuasar } from 'quasar'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EditClassDialog from './TeacherDashboardEditClassDialog.vue'
-import classesStores from '../store/classes'
+import { useClassStore } from '../store/classes'
 import { ClassObject } from '../utils/interface'
 
 const $q = useQuasar()
 const route = useRoute()
 const router = useRouter()
 
-const myClass = classesStores.classes()
+const myClass = useClassStore()
 
 const classList = ref<ClassObject[]>([])
 
@@ -153,7 +153,7 @@ function deleteClassConfirm(classroom: ClassObject) {
           router.replace('/dashboard')
         }
       },
-      failure: (res: any) => {
+      failure: (error: any) => {
         $q.notify({
           type: 'negative',
           message: '删除班级失败',

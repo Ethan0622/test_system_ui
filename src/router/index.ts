@@ -37,6 +37,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/TeacherDashboardAddItems.vue'),
       },
       { path: 'class-detail/:id', component: () => import('../views/TeacherDashboardClasses.vue') },
+      { path: 'grade-score/:id', component: () => import('../views/TeacherDashboardGradeSubject.vue') },
     ],
   },
 

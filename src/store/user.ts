@@ -1,7 +1,6 @@
 import { VueCookieNext } from 'vue-cookie-next'
 import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
-import { local } from './local'
 import { GetParams, PostParams } from '@/utils/interface'
 import { AxiosError, AxiosResponse } from 'axios'
 import { UnfinishedTest } from '@/utils/interface'
@@ -12,7 +11,7 @@ export const useUserStore = defineStore({
     userInfo: VueCookieNext.getCookie('userInfo'),
     unfinishedTest: {} as UnfinishedTest,
   }),
-  persist: { enabled: true, strategies: [{ paths: ['unfinishTest'] }] },
+  persist: { enabled: true, strategies: [{ paths: ['unfinishedTest'] }] },
   getters: {},
   actions: {
     register({ data, success, failure }: PostParams) {
@@ -93,7 +92,6 @@ export const useUserStore = defineStore({
         permission: 'authentication',
         success: (res: AxiosResponse) => {
           if (res.status == 200) {
-            local.set('unfinishTestInfo', JSON.stringify(res.data))
             this.unfinishedTest = res.data
             success(res.data)
           }

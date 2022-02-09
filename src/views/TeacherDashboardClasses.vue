@@ -10,18 +10,8 @@
         <div class="text-h5 q-my-sm col-12">教师：{{ user.userInfo.realname || user.userInfo.number }}</div>
       </div>
 
-      <q-card class="q-mt-md q-mx-sm">
-        <q-tabs v-model="tab" class="text-grey" active-color="primary">
-          <q-tab name="student" label="学生" />
-          <q-tab name="test" label="考试" />
-        </q-tabs>
-
-        <q-separator />
-
-        <q-tab-panels v-model="tab" keep-alive animated>
-          <q-tab-panel name="student"><TeacherDashboardClassStudentsVue /></q-tab-panel>
-          <!-- <q-tab-panel name="experiment"><TeacherDashboardContentClassroomExperimentVue /></q-tab-panel> -->
-        </q-tab-panels>
+      <q-card class="q-my-md q-mx-sm">
+        <TeacherDashboardClassStudentsVue />
       </q-card>
     </div>
   </q-page>
@@ -44,7 +34,6 @@ const myClass = useClassStore()
 const user = useUserStore()
 
 const tab = ref<string>('student')
-// const classroom = ref<ClassObject>()
 
 const classroom = computed(() => {
   let findedClass: ClassObject = myClass.classrooms.find((c: ClassObject) => c.id == Number(route.params.id))

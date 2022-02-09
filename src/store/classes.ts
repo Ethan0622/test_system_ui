@@ -1,15 +1,18 @@
 import { AxiosError, AxiosResponse } from 'axios'
 import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
-import { DeleteParams, GetParams, PostParams } from '@/utils/interface'
+import { DeleteParams, GetParams, PostParams, TestInfoObject, UserObject } from '@/utils/interface'
 
 export const useClassStore = defineStore({
   id: 'classes',
   state: () => {
     return {
       classrooms: [],
+      currentStudent: {} as UserObject,
+      currentTest: {} as TestInfoObject,
     }
   },
+  persist: { enabled: true, strategies: [{ paths: ['currentStudent', 'currentTest'] }] },
   getters: {},
   actions: {
     getClasses({ success, failure }: GetParams) {
@@ -88,6 +91,50 @@ export const useClassStore = defineStore({
     removeStudent({ urlParams, data, success, failure }: PostParams) {
       httpMethods.delete({
         url: `api/classes/class_student/${urlParams}`,
+        data,
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          if (res.status == 200) {
+            success(res.data)
+          }
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
+    getStudentTests({ urlParams, params, success, failure }: GetParams) {
+      httpMethods.get({
+        url: `api/classes/class_detail/${urlParams}/`,
+        params,
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          if (res.status == 200) {
+            success(res.data)
+          }
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
+    getSubjectAnswer({ urlParams, success, failure }: GetParams) {
+      httpMethods.get({
+        url: `api/classes/class_test/${urlParams}/`,
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          if (res.status == 200) {
+            success(res.data)
+          }
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
+    gradeSubjectItem({ urlParams, data, success, failure }: PostParams) {
+      httpMethods.post({
+        url: `api/classes/class_test/${urlParams}/`,
         data,
         permission: 'authentication',
         success: (res: AxiosResponse) => {

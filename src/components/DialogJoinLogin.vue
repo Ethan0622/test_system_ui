@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, onMounted } from 'vue'
+import { ref, defineEmits } from 'vue'
 import { useQuasar } from 'quasar'
 import {useUserStore} from '../store/user'
 

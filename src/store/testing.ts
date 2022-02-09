@@ -7,7 +7,7 @@ import { ItemObject } from '../utils/interface'
 export const useTestStore = defineStore({
   id: 'testing',
   state: () => ({
-    testId: undefined,
+    testId: 0,
     testItem: {} as ItemObject,
     testFinish: false,
   }),
@@ -67,6 +67,20 @@ export const useTestStore = defineStore({
         },
       })
     },
+    finishTest({ urlParams, data, success, failure }: PostParams) {
+      httpMethods.post({
+        url: `api/testing/test_finish/${urlParams}/`,
+        data,
+        success: (res: AxiosResponse) => {
+          if (res.status == 200) {
+            success(res)
+          }
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
     submitInitAnswer({ data, success, failure }: PostParams) {
       httpMethods.post({
         url: 'api/testing/init_test_process/',
@@ -103,9 +117,26 @@ export const useTestStore = defineStore({
         },
       })
     },
-    getFirstSubjectItem({ success, failure }: GetParams) {
+    getFirstObjectItem({params, success, failure}:GetParams){
+      httpMethods.get({
+        url: 'api/testing/object_test_process/',
+        params,
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          if (res.status == 200) {
+            this.testItem = res.data
+            success(res.data)
+          }
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
+    getFirstSubjectItem({params, success, failure }: GetParams) {
       httpMethods.get({
         url: 'api/testing/subject_test_process/',
+        params,
         permission: 'authentication',
         success: (res: AxiosResponse) => {
           if (res.status == 200) {

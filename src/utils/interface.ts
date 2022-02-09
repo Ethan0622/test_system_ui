@@ -31,6 +31,15 @@ export interface UserObject {
   joined_class: number | undefined
 }
 
+export interface TestInfoObject {
+  test_id: number
+  start_time: string
+  end_time: string
+  total_time: string
+  final_ability: string
+  un_grade: boolean
+}
+
 export interface UnfinishedTest {
   isUnfinished: boolean
   unfinishedInfo:

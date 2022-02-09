@@ -12,13 +12,7 @@
           {{ props.row.student_name || '-' }}
         </q-td>
         <q-td key="finished_tests" :props="props">
-          <q-btn
-            flat
-            color="primary"
-            label="点击查看"
-            dense
-            :to="`/${props.row.kexperimentRouter}/` + props.row.test_id"
-          />
+          <q-btn flat color="primary" label="点击查看" dense @click="openTestsList(props.row)" />
         </q-td>
         <q-td key="modify" :props="props">
           <q-btn
@@ -32,6 +26,19 @@
       </q-tr>
     </template>
   </q-table>
+
+  <q-separator />
+
+  <q-expansion-item
+    ref="toggleItem"
+    class="q-my-md"
+    icon="reorder"
+    label="学生个人测验记录"
+    header-class="bg-white text-h6 shadow-1"
+  >
+    <TeacherDashboardClassTestsVue :studentInfo="studentInfo" />
+  </q-expansion-item>
+
   <q-dialog ref="editDialog" v-model="edit.open" persistent>
     <q-card style="min-width: 350px">
       <q-card-section>
@@ -62,10 +69,11 @@
 </template>
 
 <script setup lang="ts">
-import { QDialog, QInput, useQuasar } from 'quasar'
-import { ref, onMounted, reactive } from 'vue'
-import { useRoute, onBeforeRouteUpdate } from 'vue-router'
-import {useClassStore} from '../store/classes'
+import { QDialog, QExpansionItem, QInput, useQuasar } from 'quasar'
+import { ref, onMounted, reactive, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import TeacherDashboardClassTestsVue from './TeacherDashboardClassTests.vue'
+import { useClassStore } from '../store/classes'
 import { UserObject } from '../utils/interface'
 
 const $q = useQuasar()
@@ -83,9 +91,32 @@ const columns = [
 
 const editDialog = ref<QDialog>()
 const editInput = ref<QInput>()
+const toggleItem = ref<QExpansionItem>()
 let studentList = ref([])
 const repassword = ref<string>('')
+const studentInfo = ref<UserObject>()
 const edit = reactive({ open: false, student_id: undefined })
+
+watch(
+  () => route.params.id,
+  async (newVal, oldVal) => {
+    let pathMatch = route.path.includes('/dashboard/class-detail/')
+    if (newVal != oldVal && pathMatch) {
+      myClass.getClassStudents({
+        urlParams: Number(newVal),
+        success: (res: any) => {
+          toggleItem.value?.hide()
+          studentList.value = res
+          studentInfo.value = undefined
+          console.log(res)
+        },
+        failure: (error: unknown) => {
+          console.log(error)
+        },
+      })
+    }
+  }
+)
 
 function unnull(val: string) {
   return (val && val.length > 0) || '请输入重置密码'
@@ -111,7 +142,7 @@ function resetPassword() {
       })
       console.log(res)
     },
-    failure: (error: any) => {
+    failure: (error: unknown) => {
       console.log(error)
       $q.notify({
         type: 'negative',
@@ -140,7 +171,7 @@ function removeStudent(id: number | undefined) {
           position: 'top',
         })
       },
-      failure: (error: any) => {
+      failure: (error: unknown) => {
         console.log(error)
       },
     })
@@ -148,22 +179,10 @@ function removeStudent(id: number | undefined) {
   editDialog.value?.hide()
 }
 
-onBeforeRouteUpdate(async (to, from) => {
-  studentList.value = []
-  const pathmatch = to.fullPath.includes('/dashboard/class-detail/')
-  if (pathmatch) {
-    myClass.getClassStudents({
-      urlParams: Number(to.params.id),
-      success: (res: any) => {
-        studentList.value = res
-        console.log(res)
-      },
-      failure: (error: any) => {
-        console.log(error)
-      },
-    })
-  }
-})
+function openTestsList(info: UserObject) {
+  toggleItem.value?.show()
+  studentInfo.value = info
+}
 
 onMounted(() => {
   myClass.getClassStudents({
@@ -172,7 +191,7 @@ onMounted(() => {
       studentList.value = res
       console.log(res)
     },
-    failure: (error: any) => {
+    failure: (error: unknown) => {
       console.log(error)
     },
   })

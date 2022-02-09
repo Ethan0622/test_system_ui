@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-import {useUserStore} from '../store/user'
+import { useUserStore } from '../store/user'
 
 const user = useUserStore()
 
@@ -62,9 +62,9 @@ onMounted(() => {
 function timeFormat(total_time: string, end_time: string) {
   const timeList = total_time.split(':')
   if (end_time) {
-    return `${Number(timeList[0])} 时 ${Number(timeList[1])} 分 ${Number(timeList[2])} 秒`
+    return `${Number(timeList[0])} 时 ${Number(timeList[1])} 分 ${parseInt(timeList[2])} 秒`
   } else {
-    return `${Number(timeList[0])} 时 ${Number(timeList[1])} 分 ${Number(timeList[2])} 秒 （超时未完成）`
+    return `${Number(timeList[0])} 时 ${Number(timeList[1])} 分 ${parseInt(timeList[2])} 秒 （超时未完成）`
   }
 }
 </script>

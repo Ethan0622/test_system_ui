@@ -20,27 +20,14 @@
         />
       </div>
       <div class="col-12 row justify-center">
-        <q-btn class="q-my-md" color="primary" label="下一题" @click="submitAnswer"></q-btn>
+        <q-btn class="q-my-md" color="primary" :label="btnLabel" @click="submitAnswer"></q-btn>
       </div>
     </div>
   </div>
-  <q-dialog v-model="subjectConfirm" persistent>
-    <q-card>
-      <q-card-section class="row items-center">
-        <q-avatar icon="signal_wifi_off" color="primary" text-color="white" />
-        <span class="q-ml-sm">
-          您已完成客观题部分测验，接下来是主观题部分。主观题包括4题名词解释，2题简答以及1题论述，请合理分配时间作答。
-        </span>
-      </q-card-section>
-
-      <q-card-actions align="right">
-        <q-btn flat label="确定" color="primary" v-close-popup @click="startSubjectTest()" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
 </template>
 
 <script setup lang="ts">
+import { VueCookieNext } from 'vue-cookie-next'
 import { useQuasar } from 'quasar'
 import { ref, onMounted, watch, computed } from 'vue'
 import { useUserStore } from '../store/user'
@@ -48,6 +35,7 @@ import { useTestStore } from '../store/testing'
 import ChoiceItemTestVue from '@/components/ChoiceItemTest.vue'
 import JudgeItemTestVue from '@/components/JudgeItemTest.vue'
 import SubjectItemTestVue from '@/components/SubjectItemTest.vue'
+import TestHintDialog from './TestHintDialog.vue'
 
 const $q = useQuasar()
 
@@ -57,9 +45,10 @@ const testItem = computed(() => useTestStore().testItem)
 
 const testName = ref<string>('')
 const answer = ref<string>('')
+const btnLabel = ref<string>('')
+const initFinish = ref<boolean>(false)
 const finishObjTest = ref<boolean>(false)
-const testFinish = ref<boolean>(false)
-const subjectConfirm = ref<boolean>(false)
+const testWillFinish = ref<boolean>(false)
 
 function get_answer(val: string) {
   console.log(val)
@@ -76,14 +65,38 @@ function get_answer(val: string) {
   }
 }
 
+watch(initFinish, (newVal, oldVal) => {
+  console.log(newVal, oldVal)
+  if (newVal) {
+    $q.dialog({
+      component: TestHintDialog,
+      componentProps: {
+        stage: 'startObject',
+      },
+    }).onOk((val: string) => {
+      testName.value = val
+    })
+  }
+})
+
 watch(finishObjTest, (newVal, oldVal) => {
   if (newVal) {
-    subjectConfirm.value = true
-    $q.notify({
-      type: 'positive',
-      message: '客观题答题结束',
-      position: 'top',
-    })
+    if (newVal) {
+      $q.dialog({
+        component: TestHintDialog,
+        componentProps: {
+          stage: 'startSubject',
+        },
+      }).onOk((val: string) => {
+        testName.value = val
+      })
+    }
+  }
+})
+
+watch(testWillFinish, (newVal, oldVal) => {
+  if (newVal) {
+    btnLabel.value = '结束测试'
   }
 })
 
@@ -97,10 +110,17 @@ function submitAnswer() {
           answer: answer.value,
         },
         success: (res: any) => {
+          if (res.init_finished) {
+            initFinish.value = true
+            let updateUser = VueCookieNext.getCookie('userInfo')
+            updateUser.init_ability = res.init_ability
+            VueCookieNext.setCookie('userInfo', updateUser)
+            user.$patch({ userInfo: updateUser })
+          }
           answer.value = ''
           console.log(res)
         },
-        failure: (error: any) => {
+        failure: (error: unknown) => {
           console.log(error)
         },
       })
@@ -113,7 +133,7 @@ function submitAnswer() {
         },
         success: (res: any) => {
           answer.value = ''
-          testFinish.value = res.finishAllTest
+          finishObjTest.value = res.finishObjTest
           console.log(res)
         },
         failure: (error: any) => {
@@ -129,10 +149,25 @@ function submitAnswer() {
         },
         success: (res: any) => {
           answer.value = ''
-          finishObjTest.value = res.finishObjTest
+          if (res.next_item.type == 5) {
+            testWillFinish.value = true
+          }
+          if (res.finishAllTest) {
+            testing.finishTest({
+              urlParams: testing.testId,
+              data: {},
+              success: (res: any) => {
+                console.log(res)
+                console.log('考试结束，路由跳转即可')
+              },
+              failure: (error: unknown) => {
+                console.log(error)
+              },
+            })
+          }
           console.log(res)
         },
-        failure: (error: any) => {
+        failure: (error: unknown) => {
           console.log(error)
         },
       })
@@ -147,34 +182,16 @@ function submitAnswer() {
   }
 }
 
-function startSubjectTest() {
-  testing.getFirstSubjectItem({
-    success: (res: any) => {
-      console.log(res)
-    },
-    failure: (error: any) => {
-      console.log(error)
-    },
-  })
-}
-
 onMounted(() => {
   if (user.userInfo.init_ability) {
-    if (user.unfinishedTest.isUnfinished) {
-      if (user.unfinishedTest.unfinishedInfo?.finish_object_test) {
-        testName.value = '正式测试-主观题部分'
-      } else {
-        testName.value = '正式测试-客观题部分'
-      }
+    if (testItem.value.type == 1 || testItem.value.type == 2) {
+      testName.value = '正式测试-客观题部分'
     } else {
-      if (!finishObjTest.value) {
-        testName.value = '正式测试-客观题部分'
-      } else {
-        testName.value = '正式测试-主观题部分'
-      }
+      testName.value = '正式测试-主观题部分'
     }
   } else {
     testName.value = '初始能力测定'
   }
+  btnLabel.value = '下一题'
 })
 </script>

@@ -70,7 +70,7 @@ function onSubmit() {
     data: {
       number: number.value,
       password: password.value,
-      userType: userType,
+      type: userType.value,
     },
 
     success: () => {

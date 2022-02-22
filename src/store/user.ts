@@ -20,7 +20,7 @@ export const useUserStore = defineStore({
         data,
         permission: 'allowAny',
         success: (res: AxiosResponse) => {
-          if (res.status == 200) {
+          if (res.status == 201) {
             this.userInfo = res.data
             success(res.data)
           }

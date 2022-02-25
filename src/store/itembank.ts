@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
 import { useUserStore } from './user'
 import { DeleteParams, PostParams, UploadParams } from '@/utils/interface'
+import { baseUrl } from '../api/baseUrl'
 
 export const useItemStore = defineStore({
   id: 'itembank',
@@ -53,10 +54,10 @@ export const useItemStore = defineStore({
         },
       })
     },
-    uploadFile({ data, success, failure }: UploadParams) {
+    uploadItemFile({ data, success, failure }: UploadParams) {
       axios({
         method: 'POST',
-        url: 'http://127.0.0.1:8001/api/itembank/upload_item_files/',
+        url: baseUrl + 'api/itembank/upload_item_files/',
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: 'Bearer ' + useUserStore().userInfo.token,

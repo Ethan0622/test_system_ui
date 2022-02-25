@@ -1,7 +1,8 @@
 <template>
   <q-page padding>
-    <AddChoiceItemsVue v-if="item && item.type == 1" :itemDetail="item" />
-    <AddJudgeItemsVue v-if="item && item.type == 2" :itemDetail="item" />
+    <UpdateChoiceItemsVue v-if="item && item.type == 1" :itemDetail="item" />
+    <UpdateJudgeItemsVue v-if="item && item.type == 2" :itemDetail="item" />
+    <UpdateSubjectItemsVue v-if="item && item.type != 1 && item.type != 2" :itemDetail="item" />
   </q-page>
 </template>
 
@@ -9,9 +10,10 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { ItemObject } from '../utils/interface'
-import AddChoiceItemsVue from './ChoiceItemsView.vue'
-import AddJudgeItemsVue from './JudgeItemsView.vue'
-import {useTestStore} from '../store/testing'
+import { useTestStore } from '../store/testing'
+import UpdateChoiceItemsVue from './ChoiceItemsView.vue'
+import UpdateJudgeItemsVue from './JudgeItemsView.vue'
+import UpdateSubjectItemsVue from './SubjectItemsView.vue'
 
 const route = useRoute()
 const testing = useTestStore()

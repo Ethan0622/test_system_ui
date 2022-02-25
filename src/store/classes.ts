@@ -1,7 +1,16 @@
-import { AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
-import { DeleteParams, GetParams, PostParams, TestInfoObject, UserObject } from '@/utils/interface'
+import { useUserStore } from './user'
+import {
+  DeleteParams,
+  GetParams,
+  PostParams,
+  TestInfoObject,
+  UploadParams,
+  UserObject,
+} from '@/utils/interface'
+import { baseUrl } from '../api/baseUrl'
 
 export const useClassStore = defineStore({
   id: 'classes',
@@ -72,6 +81,25 @@ export const useClassStore = defineStore({
           failure(error)
         },
       })
+    },
+    uploadStudentFile({ urlParams, data, success, failure }: UploadParams) {
+      axios({
+        method: 'POST',
+        url: baseUrl + `api/classes/class_student/${urlParams}/`,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + useUserStore().userInfo.token,
+        },
+        data,
+      })
+        .then((res: AxiosResponse) => {
+          if (res.status == 200) {
+            success(res.data)
+          }
+        })
+        .catch((error: AxiosError) => {
+          failure(error.response?.data)
+        })
     },
     updateStudentInfo({ urlParams, data, success, failure }: PostParams) {
       httpMethods.put({

@@ -9,7 +9,7 @@
           {{ props.row.number }}
         </q-td>
         <q-td key="student_name" :props="props">
-          {{ props.row.student_name || '-' }}
+          {{ props.row.realname || '-' }}
         </q-td>
         <q-td key="finished_tests" :props="props">
           <q-btn flat color="primary" label="点击查看" dense @click="openTestsList(props.row)" />

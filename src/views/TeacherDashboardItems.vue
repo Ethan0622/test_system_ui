@@ -78,13 +78,10 @@ const columns = [
 ]
 
 function itemType(num: number) {
-  switch (num) {
-    case 1:
-      return '选择题'
-    case 2:
-      return '判断题'
-    case 3:
-      return '简答题'
+  if (num == 1 || num == 2) {
+    return '客观题'
+  } else {
+    return '主观题'
   }
 }
 

@@ -66,6 +66,7 @@ export interface PostParams {
 }
 
 export interface UploadParams {
+  urlParams?: number | null
   data: FormData
   success: any
   failure: any

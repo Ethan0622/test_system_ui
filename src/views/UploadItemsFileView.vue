@@ -1,5 +1,8 @@
 <template>
   <div class="row justify-center">
+    <div class="col-12 row justify-center q-mb-md">
+      <q-btn color="primary" label="点击下载模板" @click="downloadFile"></q-btn>
+    </div>
     <q-file
       class="col-5"
       color="teal"
@@ -13,28 +16,6 @@
       </template>
     </q-file>
     <q-btn unelevated color="primary" icon="upload" title="上传" @click="uploadItemFile()" />
-
-    <q-dialog v-model="showErrors" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <div class="q-my-sm text-h6">
-            <q-avatar class="material-icons-round" icon="warning" />
-            您上传的文件内容存在以下问题，请检查修改后再尝试上传！
-          </div>
-          <div style="max-height: 300px; overflow-y: auto">
-            <q-list dense>
-              <q-item v-ripple v-for="(item, index) in uploadErrors" :key="item">
-                <q-item-section class="text-body1">{{ index + 1 }}、{{ item }}</q-item-section>
-              </q-item>
-            </q-list>
-          </div>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="确定" color="primary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
@@ -42,20 +23,29 @@
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { useItemStore } from '../store/itembank'
+import UploadFileWarningDialogVue from './UploadFileWarningDialog.vue'
 
 const $q = useQuasar()
 
 const itembank = useItemStore()
 
 const file = ref(null)
-const uploadErrors = ref<string[]>([])
-const showErrors = ref<boolean>(false)
+
+function downloadFile() {
+  var a = document.createElement('a') //创建一个<a></a>标签
+  a.href = '/public/static/uploadItemsTemplate.rar' // 给a标签的href属性值加上地址，使用绝对路径
+  a.download = 'uploadItemsTemplate.rar' //设置下载文件文件名
+  a.style.display = 'none' // 障眼法藏起来a标签
+  document.body.appendChild(a) // 将a标签追加到文档对象中
+  a.click() // 模拟点击了a标签，会触发a标签的href的读取，浏览器就会自动下载了
+  a.remove() // 一次性的，用完就删除a标签
+}
 
 function uploadItemFile() {
   if (file.value) {
     let form = new FormData()
     form.append('file', file.value)
-    itembank.uploadFile({
+    itembank.uploadItemFile({
       data: form,
       success: (res: any) => {
         console.log(res)
@@ -66,8 +56,13 @@ function uploadItemFile() {
         })
       },
       failure: (error: any) => {
-        uploadErrors.value = error.errors
-        showErrors.value = true
+        $q.dialog({
+          component: UploadFileWarningDialogVue,
+          componentProps: {
+            errors: error.errors,
+            fileSwitch: 'itemsFile',
+          },
+        })
       },
     })
   } else {

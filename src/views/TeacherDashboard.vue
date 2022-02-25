@@ -33,7 +33,23 @@
                 :to="'/dashboard/items-list/' + 3"
                 replace
               >
+                <q-item-section>名词解释</q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                :active-class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+                :to="'/dashboard/items-list/' + 4"
+                replace
+              >
                 <q-item-section>简答题</q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                :active-class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+                :to="'/dashboard/items-list/' + 5"
+                replace
+              >
+                <q-item-section>论述题</q-item-section>
               </q-item>
               <q-item
                 clickable
@@ -127,7 +143,7 @@ function openEditDialog({ isCreate, classInfo = undefined }: { isCreate: boolean
     },
   })
     .onOk((classId: number) => {
-      router.replace('/dashboard/classroom/' + classId)
+      router.replace('/dashboard/class-detail/' + classId)
       // window.location.reload()
       getClasses()
       console.log('ok')

@@ -63,6 +63,19 @@
                 <q-item-section>教师控制台</q-item-section>
               </q-item>
 
+              <q-item
+                v-if="userInfo.type == 1"
+                clickable
+                v-close-popup
+                @click="openAdmin"
+                :active-class="$q.dark.isActive ? 'text-white' : 'text-dark'"
+              >
+                <q-item-section side>
+                  <q-icon name="settings_applications" size="sm" />
+                </q-item-section>
+                <q-item-section>后台管理</q-item-section>
+              </q-item>
+
               <q-item clickable v-close-popup @click="logout">
                 <q-item-section side>
                   <q-icon name="logout" size="sm" />
@@ -81,6 +94,7 @@
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { baseUrl } from './api/baseUrl'
 import { useUserStore } from './store/user'
 import UserInfo from './views/UserInfo.vue'
 import DialogJoin from './components/DialogJoin.vue'
@@ -120,6 +134,10 @@ function openLoginDialog() {
     .onCancel(() => {
       console.log('Cancel')
     })
+}
+
+function openAdmin() {
+  window.open(baseUrl + 'admin', '_blank')
 }
 
 function logout() {

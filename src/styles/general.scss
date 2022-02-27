@@ -8,7 +8,7 @@ body {
 
 .container {
   margin: 0 auto;
-  @media screen and (max-width: $breakpoint-xl-max) {
+  @media screen and (max-width: $breakpoint-lg-max) {
     width: 1300px;
   }
   @media screen and (max-width: $breakpoint-md-max) {

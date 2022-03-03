@@ -9,7 +9,7 @@
       <q-btn v-if="!userInfo" flat label="注册/登录" @click="openLoginDialog" />
       <div v-else>
         <q-btn dense unelevated class="q-mr-xs" no-caps padding="6px 15px">
-          <q-avatar size="sm" :icon="userInfo.avatar ? null : 'person'"></q-avatar>
+          <q-avatar size="sm" icon="person"></q-avatar>
           <span>{{ userInfo.number }}</span>
           <q-menu
             anchor="bottom middle"

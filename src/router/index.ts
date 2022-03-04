@@ -19,6 +19,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   { path: '/tests-list', component: () => import('../views/TestsList.vue') },
   { path: '/classroom', component: () => import('../views/ClassroomList.vue') },
+  { path: '/test-result/:id', component: () => import('../views/TestResult.vue') },
   {
     path: '/dashboard',
     component: () => import('../views/TeacherDashboard.vue'),

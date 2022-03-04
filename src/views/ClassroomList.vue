@@ -106,7 +106,8 @@ function joinClass() {
       console.log(res)
     },
     failure: (error: any) => {
-      console.log(error)
+      console.log(error.response.data)
+      $q.notify({ type: 'negative', message: error.response.data.msg, position: 'top' })
     },
   })
 }

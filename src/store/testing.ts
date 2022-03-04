@@ -117,7 +117,7 @@ export const useTestStore = defineStore({
         },
       })
     },
-    getFirstObjectItem({params, success, failure}:GetParams){
+    getFirstObjectItem({ params, success, failure }: GetParams) {
       httpMethods.get({
         url: 'api/testing/object_test_process/',
         params,
@@ -133,7 +133,7 @@ export const useTestStore = defineStore({
         },
       })
     },
-    getFirstSubjectItem({params, success, failure }: GetParams) {
+    getFirstSubjectItem({ params, success, failure }: GetParams) {
       httpMethods.get({
         url: 'api/testing/subject_test_process/',
         params,
@@ -180,6 +180,18 @@ export const useTestStore = defineStore({
     getTypeItems({ urlParams, success, failure }: GetParams) {
       httpMethods.get({
         url: `api/itembank/item_type_list/${urlParams}/`,
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          success(res.data)
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
+    getTestResult({ urlParams, success, failure }: GetParams) {
+      httpMethods.get({
+        url: `api/testing/test_info_detail/${urlParams}`,
         permission: 'authentication',
         success: (res: AxiosResponse) => {
           success(res.data)

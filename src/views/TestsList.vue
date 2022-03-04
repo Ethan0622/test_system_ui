@@ -22,7 +22,7 @@
               label="点击查看"
               :disable="!props.row.end_time"
               dense
-              :to="`/${props.row.kexperimentRouter}/` + props.row.test_id"
+              :to="'/test-result/' + props.row.test_id"
             />
           </q-td>
         </q-tr>
@@ -39,12 +39,13 @@ import { useUserStore } from '../store/user'
 const user = useUserStore()
 
 const columns = [
-  { name: 'index', label: '序号', align: 'center' },
-  { name: 'start_time', align: 'center', label: '开始时间' },
-  { name: 'end_time', label: '结束时间', align: 'center', sortable: true },
-  { name: 'duration_time', align: 'center', label: '测验时长' },
-  { name: 'details', align: 'center', label: '查看详情' },
+  { name: 'index', label: '序号', align: 'center', field: 'index' },
+  { name: 'start_time', align: 'center', label: '开始时间', field: 'start_time' },
+  { name: 'end_time', label: '结束时间', align: 'center', sortable: true, field: 'end_time' },
+  { name: 'duration_time', align: 'center', label: '测验时长', field: 'duration_time' },
+  { name: 'details', align: 'center', label: '查看详情', field: 'details' },
 ]
+
 let TestsList = ref([])
 
 onMounted(() => {

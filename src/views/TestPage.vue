@@ -30,6 +30,7 @@
 import { VueCookieNext } from 'vue-cookie-next'
 import { useQuasar } from 'quasar'
 import { ref, onMounted, watch, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUserStore } from '../store/user'
 import { useTestStore } from '../store/testing'
 import ChoiceItemTestVue from '@/components/ChoiceItemTest.vue'
@@ -38,6 +39,8 @@ import SubjectItemTestVue from '@/components/SubjectItemTest.vue'
 import TestHintDialog from './TestHintDialog.vue'
 
 const $q = useQuasar()
+
+const router = useRouter()
 
 const user = useUserStore()
 const testing = useTestStore()
@@ -159,6 +162,7 @@ function submitAnswer() {
               success: (res: any) => {
                 console.log(res)
                 console.log('考试结束，路由跳转即可')
+                router.replace(`/test-result/${testing.testId}`)
               },
               failure: (error: unknown) => {
                 console.log(error)

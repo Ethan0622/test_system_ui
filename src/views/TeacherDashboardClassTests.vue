@@ -42,7 +42,8 @@
         :class="$q.dark.isActive ? 'text-grey-6' : 'text-grey'"
       >
         <q-icon size="2em" name="sentiment_dissatisfied" />
-        <span>请先在班级中选择你要查阅测验的学生</span>
+        <span v-if="!studentInfo">请先在班级中选择你要查阅测验的学生</span>
+        <span v-else>该学生还未进行过任何测验</span>
       </div>
     </template>
   </q-table>
@@ -69,7 +70,7 @@ const columns = [
   { name: 'start_time', label: '开始时间', align: 'center' },
   { name: 'total_time', label: '总用时', align: 'center' },
   { name: 'ability', label: '测评能力值', align: 'center' },
-  { name: 'grade', label: '批改', align: 'center' },
+  { name: 'grade', label: '主观题批改', align: 'center' },
 ]
 
 const testsList = ref([])

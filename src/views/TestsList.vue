@@ -61,11 +61,15 @@ onMounted(() => {
 })
 
 function timeFormat(total_time: string, end_time: string) {
-  const timeList = total_time.split(':')
-  if (end_time) {
-    return `${Number(timeList[0])} 时 ${Number(timeList[1])} 分 ${parseInt(timeList[2])} 秒`
-  } else {
-    return `${Number(timeList[0])} 时 ${Number(timeList[1])} 分 ${parseInt(timeList[2])} 秒 （超时未完成）`
+  if (total_time) {
+    const timeList = total_time.split(':')
+    if (end_time) {
+      return `${Number(timeList[0])} 时 ${Number(timeList[1])} 分 ${parseInt(timeList[2])} 秒`
+    } else {
+      return `${Number(timeList[0])} 时 ${Number(timeList[1])} 分 ${parseInt(timeList[2])} 秒 （超时未完成）`
+    }
+  }else {
+    return '考试正在进行中'
   }
 }
 </script>

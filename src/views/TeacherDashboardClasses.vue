@@ -8,9 +8,10 @@
       <div class="row">
         <div class="text-h5 q-my-sm col-12">班级邀请码：{{ classroom.invitation_code }}</div>
         <div class="text-h5 q-my-sm col-12">教师：{{ user.userInfo.realname || user.userInfo.number }}</div>
-        <div>
+        <div class="q-mt-sm q-mb-md col-12">
           <q-btn color="primary" label="点击下载模板" @click="downloadFile"></q-btn>
         </div>
+
         <q-file class="col-3" color="teal" filled v-model="file" accept=".xlsx, .xls" label="批量添加学生">
           <template v-slot:prepend>
             <q-icon name="cloud_upload" />

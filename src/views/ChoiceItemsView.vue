@@ -1,61 +1,82 @@
 <template>
-  <q-card>
+  <q-card class="card-min-width">
     <h4 class="text-center q-pt-md q-ma-none" v-if="method == 'update'">题目信息详情</h4>
-    <q-card-section class="row justify-evenly">
-      <q-form class="row justify-evenly" ref="itemForm" @reset="resetValue">
-        <div class="row col-8 items-center q-my-md">
-          <span class="text-h6 col-2">题干：</span>
-          <q-input class="col-10" filled v-model="content" autogrow :rules="[unnull]" label="请输入题干" />
+    <q-card-section>
+      <q-form class="row justify-center" ref="itemForm" @reset="resetValue">
+        <div class="col-7 q-my-md">
+          <q-input filled v-model="content" autogrow :rules="[unnull]" label="请输入题干">
+            <template v-slot:before>
+              <span class="text-h6">题&emsp;&emsp;干：</span>
+            </template>
+          </q-input>
         </div>
-        <div class="row col-8 items-center q-my-md">
-          <span class="text-h6 col-2">正确答案：</span>
-          <q-input
-            class="col-10"
+        <div class="col-7 q-my-md">
+          <q-input filled v-model="correct" :rules="[unnull, correctRange]" label="请输入正确答案，填写字母">
+            <template v-slot:before>
+              <span class="text-h6">正确答案：</span>
+            </template>
+          </q-input>
+        </div>
+        <div class="col-7 row justify-between q-my-md">
+          <div class="col-5 q-my-xs">
+            <q-input filled v-model="option_A" :rules="[unnull]" label="请填写选项A">
+              <template v-slot:before>
+                <span class="text-h6">选&ensp;项&ensp;A：&nbsp;</span>
+              </template>
+            </q-input>
+          </div>
+          <div class="col-5 q-my-xs">
+            <q-input filled v-model="option_B" :rules="[unnull]" label="请填写选项B">
+              <template v-slot:before>
+                <span class="text-h6">选&ensp;项&ensp;B：&nbsp;</span>
+              </template>
+            </q-input>
+          </div>
+          <div class="col-5 q-my-xs">
+            <q-input filled v-model="option_C" :rules="[unnull]" label="请填写选项C">
+              <template v-slot:before>
+                <span class="text-h6">选&ensp;项&ensp;C：&nbsp;</span>
+              </template>
+            </q-input>
+          </div>
+          <div class="col-5 q-my-xs">
+            <q-input filled v-model="option_D" :rules="[unnull]" label="请填写选项D">
+              <template v-slot:before>
+                <span class="text-h6">选&ensp;项&ensp;D：&nbsp;</span>
+              </template>
+            </q-input>
+          </div>
+        </div>
+        <div class="col-7 q-my-md">
+          <q-input filled v-model="difficulty" :rules="[unnull]" label="请输入本题的难度系数">
+            <template v-slot:before>
+              <span class="text-h6">难度系数：</span>
+            </template>
+          </q-input>
+        </div>
+        <div class="col-7 q-my-md">
+          <q-select
             filled
-            v-model="correct"
-            :rules="[unnull, correctRange]"
-            label="请输入正确答案，填写字母"
-          />
-        </div>
-        <div class="row col-8 justify-between q-my-md">
-          <div class="row items-center q-my-xs">
-            <p class="text-h6">选项A：</p>
-            <q-input class="" filled v-model="option_A" :rules="[unnull]" label="请填写选项A" />
-          </div>
-          <div class="row items-center q-my-xs">
-            <p class="text-h6">选项B：</p>
-            <q-input class="" filled v-model="option_B" :rules="[unnull]" label="请填写选项B" />
-          </div>
-          <div class="row items-center q-my-xs">
-            <p class="text-h6">选项C：</p>
-            <q-input class="" filled v-model="option_C" :rules="[unnull]" label="请填写选项C" />
-          </div>
-          <div class="row items-center q-my-xs">
-            <p class="text-h6">选项D：</p>
-            <q-input class="" filled v-model="option_D" :rules="[unnull]" label="请填写选项D" />
-          </div>
-        </div>
-        <div class="row col-8 justify-between q-my-md">
-          <div class="row items-center">
-            <p class="text-h6">难度系数：</p>
-            <q-input class="" filled v-model="difficulty" :rules="[unnull]" label="请输入本题的难度系数" />
-          </div>
-          <div class="row items-center">
-            <p class="text-h6">所属章节：</p>
-            <q-select
-              class=""
-              filled
-              v-model="knowledge"
-              :options="knowledgeOptions"
-              :rules="[unnull]"
-              label="请输入本题的难度系数"
-            />
-          </div>
+            v-model="knowledge"
+            :options="knowledgeOptions"
+            :rules="[unnull]"
+            label="请选择本题所属章节"
+          >
+            <template v-slot:before>
+              <span class="text-h6">所属章节：</span>
+            </template>
+          </q-select>
         </div>
       </q-form>
     </q-card-section>
     <q-card-actions class="q-py-md" align="center">
-      <q-btn color="primary" :label="method == 'create' ? '上传' : '更新'" @click="submitItem()"></q-btn>
+      <q-btn
+        size="lg"
+        padding="xs md"
+        color="primary"
+        :label="method == 'create' ? '上 传' : '更 新'"
+        @click="submitItem()"
+      />
     </q-card-actions>
   </q-card>
 </template>

@@ -23,6 +23,12 @@
         <q-btn class="q-my-md" color="primary" :label="btnLabel" @click="submitAnswer"></q-btn>
       </div>
     </div>
+    <q-inner-loading
+      :showing="submitLoad"
+      label="请稍等..."
+      label-class="text-teal"
+      label-style="font-size: 1.1em"
+    />
   </div>
 </template>
 
@@ -52,6 +58,7 @@ const btnLabel = ref<string>('')
 const initFinish = ref<boolean>(false)
 const finishObjTest = ref<boolean>(false)
 const testWillFinish = ref<boolean>(false)
+const submitLoad = ref<boolean>(false)
 
 function get_answer(val: string) {
   console.log(val)
@@ -105,6 +112,7 @@ watch(testWillFinish, (newVal, oldVal) => {
 
 function submitAnswer() {
   if (answer.value) {
+    submitLoad.value = true
     if (!user.userInfo.init_ability) {
       testing.submitInitAnswer({
         data: {
@@ -122,6 +130,7 @@ function submitAnswer() {
           }
           answer.value = ''
           console.log(res)
+          submitLoad.value = false
         },
         failure: (error: unknown) => {
           console.log(error)
@@ -138,6 +147,7 @@ function submitAnswer() {
           answer.value = ''
           finishObjTest.value = res.finishObjTest
           console.log(res)
+          submitLoad.value = false
         },
         failure: (error: any) => {
           console.log(error)
@@ -152,6 +162,7 @@ function submitAnswer() {
         },
         success: (res: any) => {
           answer.value = ''
+          submitLoad.value = false
           if (res.next_item.type == 5) {
             testWillFinish.value = true
           }

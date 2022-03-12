@@ -1,32 +1,38 @@
 <template>
   <q-page padding>
-    <div class="text-h5">主观题批改</div>
-    <div>学生信息：{{ myClass.currentStudent.realname || myClass.currentStudent.number }}</div>
-    <div>考试时间：{{ myClass.currentTest.start_time }}</div>
+    <div class="text-h4 q-mb-sm">主观题批改</div>
+    <div class="text-body1 q-my-sm">
+      学生信息：{{ myClass.currentStudent.realname || myClass.currentStudent.number }}
+    </div>
+    <div class="text-body1 q-my-sm">考试时间：{{ myClass.currentTest.start_time }}</div>
     <q-card class="my-card q-my-md" v-for="(item, index) in subjectLists" :key="item.id">
       <q-card-section>
-        <div class="text-h6">{{ item.content }}</div>
-        <p>{{ item.answer }}</p>
+        <div class="text-h6 q-mb-md">{{ item.content }}</div>
+        <div class="text-body1">{{ item.answer }}</div>
       </q-card-section>
 
       <q-separator />
 
-      <q-card-actions>
-        <q-form @submit="gradeSubject(item, index)" class="row">
-          <q-input
-            bottom-slots
-            filled
-            v-model="score[index]"
-            error-message="给分不符合分值范围"
-            :error="errorFlag[index]"
-            label="请输入本题得分"
-          >
-            <template v-slot:hint>分值：{{ totalScore(item.type) }}</template>
-          </q-input>
-
-          <q-btn unelevated color="primary" label="评分" type="submit" />
+      <q-card-section>
+        <q-form @submit="gradeSubject(item, index)" class="row q-mb-md" style="min-width: 500px">
+          <div class="col-3">
+            <q-input
+              filled
+              v-model="score[index]"
+              error-message="给分不符合分值范围"
+              :error="errorFlag[index]"
+              label="请输入本题得分"
+            >
+              <template v-slot:hint>
+                <span class="text-body2">分值：{{ totalScore(item.type) }}</span>
+              </template>
+            </q-input>
+          </div>
+          <div class="col-1">
+            <q-btn unelevated size="lg" padding="11px md" color="primary" label="评 分" type="submit" />
+          </div>
         </q-form>
-      </q-card-actions>
+      </q-card-section>
     </q-card>
   </q-page>
 </template>

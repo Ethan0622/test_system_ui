@@ -13,6 +13,9 @@
           <q-td key="type" :props="props">
             {{ itemType(props.row.type) }}
           </q-td>
+          <q-td key="difficulty" :props="props">
+            {{ props.row.difficulty }}
+          </q-td>
           <q-td key="details" :props="props">
             <q-btn
               color="primary"
@@ -71,8 +74,10 @@ const columns = [
     required: true,
     label: '题目摘要',
     align: 'left',
+    field: 'content',
   },
-  { name: 'type', align: 'center', label: '题目类型', field: 'calories' },
+  { name: 'type', align: 'center', label: '题目类型', field: 'type' },
+  { name: 'difficulty', align: 'center', label: '难度系数', field: 'difficulty',sortable: true, },
   { name: 'details', align: 'right', label: '查看详情', field: 'details' },
   { name: 'delete', align: 'center', label: '删除', field: 'delete' },
 ]
@@ -124,7 +129,7 @@ onBeforeRouteUpdate(async (to, from) => {
   keyWord.value = ''
   const pathmatch = to.fullPath.includes('/dashboard/items-list/')
   if (pathmatch) {
-    testing.getTypeItems({
+    itembank.getTypeItems({
       urlParams: Number(to.params.id),
       success: (res: any) => {
         rows.value = res
@@ -137,7 +142,7 @@ onBeforeRouteUpdate(async (to, from) => {
 })
 
 onMounted(() => {
-  testing.getTypeItems({
+  itembank.getTypeItems({
     urlParams: Number(route.params.id),
     success: (res: any) => {
       rows.value = res

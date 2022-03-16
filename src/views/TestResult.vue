@@ -37,9 +37,9 @@
                 {{ formatJudge(props.row.item_correct) }}
               </q-td>
               <q-td key="answer" :props="props">
-                {{ formatJudge(props.row.answer) }}
+                {{ formatJudge(props.row.answer_content) }}
               </q-td>
-              <q-td key="judge" :props="props">
+              <q-td key="judge" :props="props" :class="props.row.judge ? 'text-positive' : 'text-negative'">
                 {{ props.row.judge ? '正确' : '错误' }}
               </q-td>
             </q-tr>
@@ -98,8 +98,20 @@ const objectColumns = [
 const subjectColumns = [
   { name: 'index', align: 'center', label: '序号', field: 'index' },
   { name: 'item_content', align: 'center', label: '题干', field: 'item_content' },
-  { name: 'item_correct', align: 'center', label: '参考答案', field: 'item_correct' },
-  { name: 'answer', align: 'center', label: '你的回答', field: 'answer' },
+  {
+    name: 'item_correct',
+    align: 'center',
+    label: '参考答案',
+    field: 'item_correct',
+    style: 'min-width:30%;white-space: normal',
+  },
+  {
+    name: 'answer',
+    align: 'center',
+    label: '你的回答',
+    field: 'answer',
+    style: 'min-width:30%;white-space: normal',
+  },
   { name: 'score', align: 'center', label: '得分', field: 'judge' },
 ]
 let objectItems = ref([])

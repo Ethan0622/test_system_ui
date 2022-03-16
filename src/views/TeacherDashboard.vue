@@ -59,6 +59,14 @@
               >
                 <q-item-section>添加试题</q-item-section>
               </q-item>
+              <q-item
+                clickable
+                :active-class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+                to="/about"
+                replace
+              >
+                <q-item-section>手动组卷</q-item-section>
+              </q-item>
             </q-list>
           </q-expansion-item>
           <q-expansion-item default-opened icon="group" label="班级管理">

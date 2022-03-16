@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { defineStore } from 'pinia'
 import { httpMethods } from '../api'
 import { useUserStore } from './user'
-import { DeleteParams, PostParams, UploadParams } from '@/utils/interface'
+import { DeleteParams, PostParams, UploadParams, GetParams } from '@/utils/interface'
 import { baseUrl } from '../api/baseUrl'
 
 export const useItemStore = defineStore({
@@ -19,6 +19,30 @@ export const useItemStore = defineStore({
           if (res.status == 201) {
             success(res.data)
           }
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
+    getTypeItems({ urlParams, success, failure }: GetParams) {
+      httpMethods.get({
+        url: `api/itembank/item_type_list/${urlParams}/`,
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          success(res.data)
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
+    getItemById({ urlParams, success, failure }: GetParams) {
+      httpMethods.get({
+        url: `api/itembank/item_info/${urlParams}/`,
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          success(res.data)
         },
         failure: (error: AxiosError) => {
           failure(error)

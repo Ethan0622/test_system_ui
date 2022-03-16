@@ -10,18 +10,18 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { ItemObject } from '../utils/interface'
-import { useTestStore } from '../store/testing'
+import { useItemStore } from '@/store/itembank'
 import UpdateChoiceItemsVue from './ChoiceItemsView.vue'
 import UpdateJudgeItemsVue from './JudgeItemsView.vue'
 import UpdateSubjectItemsVue from './SubjectItemsView.vue'
 
 const route = useRoute()
-const testing = useTestStore()
+const itembank = useItemStore()
 
 const item = ref<ItemObject>()
 
 onMounted(() => {
-  testing.getItemById({
+  itembank.getItemById({
     urlParams: Number(route.params.id),
     success: (res: any) => {
       console.log(res)

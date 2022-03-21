@@ -90,9 +90,9 @@ const testing = useTestStore()
 const ability = ref<number>()
 const objectColumns = [
   { name: 'index', align: 'center', label: '序号', field: 'index' },
-  { name: 'item_content', align: 'center', label: '题干', field: 'item_content' },
-  { name: 'item_correct', align: 'center', label: '参考答案', field: 'item_correct' },
-  { name: 'answer', align: 'center', label: '你的回答', field: 'answer' },
+  { name: 'item_content', align: 'center', label: '题干', field: 'item_content',style: 'min-width:30%;white-space: normal', },
+  { name: 'item_correct', align: 'center', label: '参考答案', field: 'item_correct',style: 'min-width:30%;white-space: normal', },
+  { name: 'answer', align: 'center', label: '你的回答', field: 'answer',style: 'min-width:30%;white-space: normal', },
   { name: 'judge', align: 'center', label: '正误', field: 'judge' },
 ]
 const subjectColumns = [

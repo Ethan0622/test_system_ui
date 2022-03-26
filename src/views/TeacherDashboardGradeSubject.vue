@@ -8,7 +8,7 @@
     <q-card class="my-card q-my-md" v-for="(item, index) in subjectLists" :key="item.id">
       <q-card-section>
         <div class="text-h6 q-mb-md">{{ item.content }}</div>
-        <div class="text-body1">{{ item.answer }}</div>
+        <div class="text-body1" v-html="item.answer" ></div>
       </q-card-section>
 
       <q-separator />

@@ -8,14 +8,37 @@
     <q-separator inset />
 
     <q-card-section class="row justify-center">
-      <q-input
+      <!-- <q-input
         autofocus
         filled
         class="col-11"
         v-model="subjectAnswer"
         @blur="deliver_answer()"
         type="textarea"
-      />
+      /> -->
+      <q-editor
+        class="col-12"
+        v-on:blur="deliver_answer()"
+        :toolbar="[
+          ['bold', 'italic', 'strike', 'underline'],
+          ['uploadImg'],
+          [
+            {
+              label: $q.lang.editor.formatting,
+              icon: $q.iconSet.editor.formatting,
+              list: 'no-icons',
+              options: ['p', 'h3', 'h4', 'h5', 'h6'],
+            },
+          ],
+        ]"
+        v-model="subjectAnswer"
+      >
+        <template v-slot:uploadImg>
+          <q-btn dense no-caps flat ref="custom" icon="photo" size="sm" @click="simulateClick">
+            <input type="file" ref="upload" @change="insertImg()" accept=".png, .jpg" style="display: none" />
+          </q-btn>
+        </template>
+      </q-editor>
     </q-card-section>
   </q-card>
 </template>
@@ -33,6 +56,9 @@ const deliver_answer = () => {
   emits('deliver_answer', subjectAnswer.value)
 }
 
+let subjectAnswer = ref<string>('')
+const upload = ref<HTMLInputElement>()
+
 const subjectTitle = computed(() => {
   switch (props.itemDetail?.type) {
     case 3:
@@ -46,11 +72,25 @@ const subjectTitle = computed(() => {
   }
 })
 
-let subjectAnswer = ref<string>()
+function simulateClick() {
+  upload.value?.dispatchEvent(new MouseEvent('click'))
+}
+
+function insertImg() {
+  if (upload.value?.files) {
+    let file = upload.value?.files[0]
+    const reader = new FileReader()
+    reader.onloadend = function () {
+      let dataUrl = reader.result
+
+      subjectAnswer.value += '<div><img src="' + dataUrl + '" /></div>'
+    }
+    upload.value.value = ''
+    reader.readAsDataURL(file)
+  }
+}
 
 onUpdated(() => {
   subjectAnswer.value = ''
 })
 </script>
-
-<style scoped></style>

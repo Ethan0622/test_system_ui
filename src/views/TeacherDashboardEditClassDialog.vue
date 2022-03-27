@@ -69,7 +69,7 @@ function onSubmit() {
           position: 'top',
         })
       },
-      failure: (error: any) => {
+      failure: (error: unknown) => {
         $q.notify({
           type: 'negative',
           message: '创建班级失败，网络故障',

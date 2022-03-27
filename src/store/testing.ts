@@ -14,6 +14,20 @@ export const useTestStore = defineStore({
   persist: { enabled: true },
   getters: {},
   actions: {
+    getTestSettings({ success, failure }: GetParams) {
+      httpMethods.get({
+        url: 'api/testing/test_setting/',
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          if (res.status == 200) {
+            success(res.data)
+          }
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
     startTest({ data, success, failure }: PostParams) {
       httpMethods.post({
         url: 'api/testing/test_info/',

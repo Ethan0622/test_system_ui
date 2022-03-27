@@ -97,5 +97,17 @@ export const useItemStore = defineStore({
           failure(error.response?.data)
         })
     },
+    getItemSum({ success, failure }: GetParams) {
+      httpMethods.get({
+        url: 'api/itembank/item_list/',
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          success(res.data)
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
   },
 })

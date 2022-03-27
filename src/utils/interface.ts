@@ -40,6 +40,15 @@ export interface TestInfoObject {
   un_grade: boolean
 }
 
+export interface TestSettingObject {
+  id: number
+  choice_total: number
+  judge_total: number
+  glossary_total: number
+  saqs_total: number
+  discuss_total: number
+}
+
 export interface UnfinishedTest {
   isUnfinished: boolean
   unfinishedInfo:

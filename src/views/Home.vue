@@ -19,6 +19,8 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../store/user'
 import { useTestStore } from '../store/testing'
 import TestHintDialog from './TestHintDialog.vue'
+import StartTestSettingDialog from './StartTestSettingDialog.vue'
+import { TestSettingObject } from '@/utils/interface'
 
 const $q = useQuasar()
 const router = useRouter()
@@ -71,16 +73,33 @@ function startTest() {
       },
     })
   } else {
-    testing.startTest({
-      data: {},
-      success: (res: any) => {
-        console.log(res)
-      },
-      failure: (error: any) => {
-        console.log(error)
-      },
+    $q.dialog({
+      component: StartTestSettingDialog,
+    }).onOk((val: number | Record<string, number>) => {
+      if (typeof val == 'number') {
+        testing.startTest({
+          data: { test_setting: val },
+          success: (res: any) => {
+            console.log(res)
+            router.push('/test-page')
+          },
+          failure: (error: any) => {
+            console.log(error)
+          },
+        })
+      } else {
+        testing.startTest({
+          data: val,
+          success: (res: any) => {
+            console.log(res)
+            router.push('/test-page')
+          },
+          failure: (error: any) => {
+            console.log(error)
+          },
+        })
+      }
     })
-    router.push('/test-page')
   }
 }
 

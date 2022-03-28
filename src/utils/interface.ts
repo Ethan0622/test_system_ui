@@ -38,6 +38,8 @@ export interface TestInfoObject {
   total_time: string
   final_ability: string
   un_grade: boolean
+  test_setting: number
+  test_settings: TestSettingObject
 }
 
 export interface TestSettingObject {

@@ -20,7 +20,6 @@ import { useUserStore } from '../store/user'
 import { useTestStore } from '../store/testing'
 import TestHintDialog from './TestHintDialog.vue'
 import StartTestSettingDialog from './StartTestSettingDialog.vue'
-import { TestSettingObject } from '@/utils/interface'
 
 const $q = useQuasar()
 const router = useRouter()

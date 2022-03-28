@@ -9,6 +9,7 @@ export const useTestStore = defineStore({
   state: () => ({
     testId: 0,
     testItem: {} as ItemObject,
+    testWillFinish:false,
     testFinish: false,
   }),
   persist: { enabled: true },
@@ -54,6 +55,7 @@ export const useTestStore = defineStore({
           if (res.status == 200) {
             if (res.data.next_item) {
               this.testItem = res.data.next_item
+              this.testWillFinish = res.data.testWillFinish
               success(res.data)
             } else {
               success(res.data)
@@ -123,6 +125,7 @@ export const useTestStore = defineStore({
         success: (res: AxiosResponse) => {
           if (res.status == 201) {
             this.testItem = res.data.next_item
+            this.testWillFinish = res.data.testWillFinish
             success(res.data)
           }
         },
@@ -154,7 +157,8 @@ export const useTestStore = defineStore({
         permission: 'authentication',
         success: (res: AxiosResponse) => {
           if (res.status == 200) {
-            this.testItem = res.data
+            this.testItem = res.data.next_item
+            this.testWillFinish = res.data.testWillFinish
             success(res.data)
           }
         },
@@ -170,6 +174,7 @@ export const useTestStore = defineStore({
         success: (res: AxiosResponse) => {
           if (res.status == 201) {
             this.testItem = res.data.next_item
+            this.testWillFinish = res.data.testWillFinish
             this.testFinish = res.data.finishAllTest
             success(res.data)
           }
@@ -179,9 +184,22 @@ export const useTestStore = defineStore({
         },
       })
     },
+    getTestInfo({ urlParams, data, success, failure }: PostParams) {
+      httpMethods.post({
+        url: `api/testing/test_info_detail/${urlParams}/`,
+        data,
+        permission: 'authentication',
+        success: (res: AxiosResponse) => {
+          success(res.data)
+        },
+        failure: (error: AxiosError) => {
+          failure(error)
+        },
+      })
+    },
     getTestResult({ urlParams, success, failure }: GetParams) {
       httpMethods.get({
-        url: `api/testing/test_info_detail/${urlParams}`,
+        url: `api/testing/test_info_detail/${urlParams}/`,
         permission: 'authentication',
         success: (res: AxiosResponse) => {
           success(res.data)

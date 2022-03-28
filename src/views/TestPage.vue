@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import { VueCookieNext } from 'vue-cookie-next'
 import { useQuasar } from 'quasar'
+import { storeToRefs } from 'pinia'
 import { ref, onMounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../store/user'
@@ -57,7 +58,8 @@ const answer = ref<string>('')
 const btnLabel = ref<string>('')
 const initFinish = ref<boolean>(false)
 const finishObjTest = ref<boolean>(false)
-const testWillFinish = ref<boolean>(false)
+const { testWillFinish } = storeToRefs(testing)
+const testAllFinish = ref<boolean>(false)
 const submitLoad = ref<boolean>(false)
 
 function get_answer(val: string) {
@@ -76,7 +78,6 @@ function get_answer(val: string) {
 }
 
 watch(initFinish, (newVal, oldVal) => {
-  console.log(newVal, oldVal)
   if (newVal) {
     $q.dialog({
       component: TestHintDialog,
@@ -90,22 +91,21 @@ watch(initFinish, (newVal, oldVal) => {
 })
 
 watch(finishObjTest, (newVal, oldVal) => {
-  if (newVal) {
-    if (newVal) {
-      $q.dialog({
-        component: TestHintDialog,
-        componentProps: {
-          stage: 'startSubject',
-        },
-      }).onOk((val: string) => {
-        testName.value = val
-      })
-    }
+  if (newVal && !testAllFinish.value) {
+    $q.dialog({
+      component: TestHintDialog,
+      componentProps: {
+        stage: 'startSubject',
+      },
+    }).onOk((val: any) => {
+      testName.value = val.testName
+      testWillFinish.value = val.testWillFinish
+    })
   }
 })
 
 watch(testWillFinish, (newVal, oldVal) => {
-  if (newVal) {
+  if (newVal != oldVal && newVal) {
     btnLabel.value = '结束测试'
   }
 })
@@ -144,10 +144,26 @@ function submitAnswer() {
           answer: answer.value,
         },
         success: (res: any) => {
-          answer.value = ''
-          finishObjTest.value = res.finishObjTest
           console.log(res)
+          answer.value = ''
           submitLoad.value = false
+          finishObjTest.value = res.finishObjTest
+          testWillFinish.value = res.testWillFinish
+          testAllFinish.value = res.testAllFinish
+          if (res.testAllFinish) {
+            testing.finishTest({
+              urlParams: testing.testId,
+              data: {},
+              success: (res: any) => {
+                console.log(res)
+                console.log('考试结束，路由跳转即可')
+                router.replace(`/test-result/${testing.testId}`)
+              },
+              failure: (error: unknown) => {
+                console.log(error)
+              },
+            })
+          }
         },
         failure: (error: any) => {
           console.log(error)
@@ -163,10 +179,9 @@ function submitAnswer() {
         success: (res: any) => {
           answer.value = ''
           submitLoad.value = false
-          if (res.next_item.type == 5) {
-            testWillFinish.value = true
-          }
-          if (res.finishAllTest) {
+          testWillFinish.value = res.testWillFinish
+          testAllFinish.value = res.testAllFinish
+          if (res.testAllFinish) {
             testing.finishTest({
               urlParams: testing.testId,
               data: {},
@@ -207,6 +222,10 @@ onMounted(() => {
   } else {
     testName.value = '初始能力测定'
   }
-  btnLabel.value = '下一题'
+  if (testWillFinish.value) {
+    btnLabel.value = '结束测试'
+  } else {
+    btnLabel.value = '下一题'
+  }
 })
 </script>

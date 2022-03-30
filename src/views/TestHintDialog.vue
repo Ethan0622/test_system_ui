@@ -109,7 +109,7 @@ function ensure() {
       onDialogOK(val)
     })
   }
-  onOKClick()
+  dialogRef.value?.hide()
 }
 
 function continueInitTest() {

@@ -24,7 +24,7 @@
         <q-form @submit="onSubmit">
           <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="使用预设">
-              <q-list bordered separator>
+              <q-list bordered separator style="max-height: 600px">
                 <q-item
                   clickable
                   v-ripple

@@ -1,12 +1,59 @@
 <template>
-  <div class="container">
-    <div class="row justify-center q-my-md">
-      <p class="col-12 text-h4 text-center">欢迎来到现代教育技术考试系统</p>
-      <p class="col-12 text-h5 text-center">{{ guide }}</p>
-      <p v-if="unfinishedTest.isUnfinished">未完成的考试已于{{ unfinishedTestStartTime }}开始</p>
-    </div>
-    <div class="row justify-center">
-      <q-btn unelevated rounded color="primary" :label="btnLabel" @click="startTest()" />
+  <div>
+    <q-img height="300" src="../assets/banner.png" style="min-height: 300px">
+      <div class="absolute-top" style="background: none; left: 8%">
+        <h3 class="text-white">现代教育技术考试系统</h3>
+        <p class="text-h5 q-my-lg">{{ guide }}</p>
+        <p v-if="unfinishedTest.isUnfinished">{{ unfinishedTestStartTime }}开始的考试正在进行中....</p>
+        <div class="q-my-lg">
+          <q-btn
+            unelevated
+            color="white"
+            text-color="black"
+            icon-right="keyboard_double_arrow_right"
+            size="lg"
+            :label="btnLabel"
+            rounded
+            padding="xs lg"
+            @click="startTest()"
+          />
+        </div>
+      </div>
+    </q-img>
+    <div class="container q-pt-xl q-pb-md">
+      <div class="text-center text-h4">自适应测试特点</div>
+      <div class="row justify-around q-mt-lg">
+        <div class="col-4 row justify-center">
+          <q-img
+            src="../assets/feature1.png"
+            class="col-12"
+            ratio="1"
+            style="max-width: 25%; min-width: 10%"
+          />
+          <div class="text-h6 text-bold q-my-md col-12 text-center">智能匹配试题</div>
+          <p class="text-body1">按应试者作答情况智能抽取题目</p>
+        </div>
+        <div class="col-4 row justify-center">
+          <q-img
+            src="../assets/feature2.png"
+            class="col-12"
+            ratio="1"
+            style="max-width: 25%; min-width: 10%"
+          />
+          <div class="text-h6 text-bold q-my-md col-12 text-center">精准结果测试</div>
+          <p class="text-body1">所选试题契合每一位应试能力水平，提高测试结果精准性</p>
+        </div>
+        <div class="col-4 row justify-center">
+          <q-img
+            src="../assets/feature3.png"
+            class="col-12"
+            ratio="1"
+            style="max-width: 25%; min-width: 10%"
+          />
+          <div class="text-h6 text-bold q-my-md col-12 text-center">针对性独立测试</div>
+          <p class="text-body1">利用自适应算法打造独特试卷，实现高效提升</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>

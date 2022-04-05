@@ -27,10 +27,9 @@ export default defineUserConfig<DefaultThemeOptions>({
         link: '/',
       },
       {
-        text: '基本使用',
+        text: '使用指南',
         link: '/',
         children: [
-          // SidebarItem
           {
             text: '介绍',
             link: '/users/introduce.md',

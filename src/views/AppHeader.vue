@@ -106,10 +106,10 @@
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-import { baseUrl } from './api/baseUrl'
-import { useUserStore } from './store/user'
-import UserInfo from './views/UserInfo.vue'
-import DialogJoin from './components/DialogJoin.vue'
+import { baseUrl } from '../api/baseUrl'
+import { useUserStore } from '../store/user'
+import UserInfo from './UserInfo.vue'
+import DialogJoin from '../components/DialogJoin.vue'
 
 const $q = useQuasar()
 

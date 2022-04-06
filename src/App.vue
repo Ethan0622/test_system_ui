@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import AppHeaderVue from './AppHeader.vue'
+import AppHeaderVue from './views/AppHeader.vue'
 
 const route = useRoute()
 const insideTestPage = ref<boolean>(false)

@@ -64,15 +64,15 @@ npm run build
 ├── public/              # 打包时会把该文件夹下的资源原封不动地复制到 dist 文件夹下
 │   └── ...
 ├── src/                 # 所有源代码都写在这个文件夹里面
-│   ├── api/                 # 存放调用后端接口的代码
+│   ├── api/                 # 存放http请求后端的函数与路径
 │   ├── assets/              # 存放源码中引用的静态资源，如平台 logo 图片等
 │   ├── components/          # 存放所有会被复用的 Vue 组件，如通用样式的按钮等
-│   ├── plugins/             # 存放插件，包括自己写的插件和第三方插件
-│   │   ├── cookies.ts         # 插件配置文件
-│   │   ├── quasar.ts          # 插件配置文件
+│   ├── plugins/             # 存放插件配置文件，包括自己写的插件和第三方插件
+│   │   ├── cookies.ts         # cookie配置
+│   │   ├── quasar.ts          # quasar配置
 │   │   └── ...
 │   ├── router/              # 存放路由信息
-│   ├── store/               # 存放 Vuex 公共状态管理的代码
+│   ├── store/               # 存放 pinia 公共状态管理的代码
 │   ├── styles/              # 存放公共样式
 │   ├── utils/               # 存放接口及相关代码工具
 │   ├── views/               # 存放非复用的 Vue 组件

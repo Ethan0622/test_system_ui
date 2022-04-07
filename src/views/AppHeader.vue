@@ -2,7 +2,7 @@
   <q-header v-if="!insideTestPage" class="bg-navBar">
     <q-toolbar class="container toolbar text-white q-mx-auto">
       <q-btn stretch flat no-caps size="16px" to="/">
-        <img src="./assets/headerLogo.png" style="width: auto; height: 50px; max-width: 90%; max-height: 90%" />
+        <img src="../assets/headerLogo.png" style="width: auto; height: 50px; max-width: 90%; max-height: 90%" />
       </q-btn>
       <q-tabs shrink content-class="tabs">
         <q-route-tab label="首页" to="/" exact />

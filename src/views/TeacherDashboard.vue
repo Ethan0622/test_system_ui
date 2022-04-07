@@ -60,7 +60,7 @@
                 <q-item-section>添加试题</q-item-section>
               </q-item>
               <q-item
-                clickable
+                disable
                 :active-class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
                 to="/about"
                 replace

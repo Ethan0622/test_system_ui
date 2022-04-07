@@ -2,10 +2,19 @@
   <q-header v-if="!insideTestPage" class="bg-navBar">
     <q-toolbar class="container toolbar text-white q-mx-auto">
       <q-btn stretch flat no-caps size="16px" to="/">
-        <img :src="headerLogo" style="width: auto; height: 50px; max-width: 90%; max-height: 90%" />
+        <img src="../assets/headerLogo.png" style="width: auto; height: 50px; max-width: 90%; max-height: 90%" />
       </q-btn>
       <q-tabs shrink content-class="tabs">
         <q-route-tab label="首页" to="/" exact />
+        <q-btn
+          dense
+          unelevated
+          no-caps
+          class="full-height"
+          padding="0 16px"
+          @click="gotoDocs"
+          label="使用指南"
+        />
         <q-route-tab label="关于" to="/about" exact />
       </q-tabs>
       <q-space />
@@ -97,11 +106,10 @@
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-import { baseUrl } from './api/baseUrl'
-import { useUserStore } from './store/user'
-import headerLogo from './assets/headerLogo.png'
-import UserInfo from './views/UserInfo.vue'
-import DialogJoin from './components/DialogJoin.vue'
+import { baseUrl } from '../api/baseUrl'
+import { useUserStore } from '../store/user'
+import UserInfo from './UserInfo.vue'
+import DialogJoin from '../components/DialogJoin.vue'
 
 const $q = useQuasar()
 
@@ -112,6 +120,10 @@ const props = defineProps({
 const router = useRouter()
 const user = useUserStore()
 const userInfo = useUserStore().userInfo
+
+function gotoDocs() {
+  window.open('http://121.40.84.189:8020/users/introduce.html', '_blank')
+}
 
 function openUserInfo() {
   $q.dialog({

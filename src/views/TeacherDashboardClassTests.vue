@@ -23,6 +23,16 @@
         <q-td key="ability" :props="props">
           {{ props.row.final_ability || '-' }}
         </q-td>
+        <q-td key="result" :props="props">
+          <q-btn
+            flat
+            color="primary"
+            dense
+            label="查看详情"
+            :disable="!props.row.end_time"
+            :to="'/test-result/' + props.row.test_id"
+          />
+        </q-td>
         <q-td key="grade" :props="props">
           <q-btn
             flat
@@ -66,11 +76,12 @@ const props = defineProps({
 })
 
 const columns = [
-  { name: 'index', label: '序号', align: 'center', sortable: true },
-  { name: 'start_time', label: '开始时间', align: 'center' },
-  { name: 'total_time', label: '总用时', align: 'center' },
-  { name: 'ability', label: '测评能力值', align: 'center' },
-  { name: 'grade', label: '主观题批改', align: 'center' },
+  { name: 'index', label: '序号', align: 'center', sortable: true, field: 'index' },
+  { name: 'start_time', label: '开始时间', align: 'center', field: 'start_time' },
+  { name: 'total_time', label: '总用时', align: 'center', field: 'total_time' },
+  { name: 'ability', label: '测评能力值', align: 'center', field: 'ability' },
+  { name: 'result', label: '测试结果', align: 'center', field: 'result' },
+  { name: 'grade', label: '主观题批改', align: 'center', field: 'grade' },
 ]
 
 const testsList = ref([])

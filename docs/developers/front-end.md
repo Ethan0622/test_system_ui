@@ -1,8 +1,12 @@
-# test_system_ui
+# 前端开发
+
+[[toc]]
 
 ## 概述
 
-欢迎来到 CAT System 前端开发文档！
+项目名称：**test_system_ui**
+
+开源地址[GitHub](https://github.com/Ethan0622/test_system_ui)
 
 本项目是基于 [Vue 3.x](https://v3.cn.vuejs.org/) 构建的，因此掌握 Vue 对于理解和学习本项目异常重要。除此之外，你必须了解 [Node.js](https://nodejs.org/zh-cn/) 及其配套的包管理工具 [npm](https://www.npmjs.cn/)。
 
@@ -80,3 +84,4 @@ npm run build
 │   └── main.ts          # 源码入口
 └── ...                  # 根目录下其他的文件暂时不需要关心
 ```
+
